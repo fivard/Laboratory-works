@@ -1,3 +1,1 @@
-# test
-testing a repository
-go go go
+Im going to complete all 7 laboratory works!!!
