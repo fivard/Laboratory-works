@@ -105,7 +105,8 @@ void Functions::readingFromTxt() {
 }
 void Functions::readingFromBin(){
     ifstream file("binary.txt", ios_base::binary);
-    MessageLog mess;file.seekg(0, ios::end);
+    MessageLog mess;
+    file.seekg(0, ios::end);
     int end_file = file.tellg();
     file.seekg(0, ios::beg);
     while (file.tellg() != end_file){
@@ -194,7 +195,7 @@ void Functions::demoCreateNewElemAndAddToVector() {
     mess.id = MessageLog::count;
     MessageLog::count++;
 
-    mess.text = "We has created message here\n";
+    mess.text = "We has created message here";
     mess.countWords = function.countWords(mess.text);
 
     time_t seconds = time(nullptr);
@@ -239,27 +240,10 @@ void Functions::saveToFile() {
         i.saveToDisk();
         usedId[i.id] = true;
     }
-    if (count == 0)
-        cout << "We didn't save any message ;(\n";
-    else
-        if (count == 1)
-            cout << "1 message was saved to files\n";
-        else
-            cout << count << " messages were saved to files\n";
     log.clear();
 }
 //Поиск по критериям
-void Functions::searchingBetweenTime() {
-    cout << "Enter data before\n"
-    << "Year Month Day Hour Minutes Sec\n";
-    FullTime timeBefore;
-    cin >> timeBefore.year >> timeBefore.month >> timeBefore.day
-    >> timeBefore.hour >> timeBefore.minutes >> timeBefore.sec;
-    cout << "Enter data after\n"
-         << "Year Month Day Hour Minutes Sec\n";
-    FullTime timeAfter;
-    cin >> timeAfter.year >> timeAfter.month >> timeAfter.day
-        >> timeAfter.hour >> timeAfter.minutes >> timeAfter.sec;
+void Functions::searchingBetweenTime(FullTime timeBefore, FullTime timeAfter) {
     Functions funct;
     funct.readingFromTxt();
     for (auto i : funct.log){
@@ -274,14 +258,7 @@ void Functions::searchingBetweenTime() {
         }
     }
 }
-void Functions::searchingTypeAndLoading() {
-    cout << "Choose a type of message\n"
-         << "debug, info, fatal, warning, error\n";
-    string neededType;
-    cin >> neededType;
-    cout << "Choose a loading of message\n";
-    double neededLoading;
-    cin >> neededLoading;
+void Functions::searchingTypeAndLoading(string neededType, double neededLoading) {
     Functions funct;
     funct.readingFromTxt();
     for (auto i : funct.log){
@@ -289,59 +266,37 @@ void Functions::searchingTypeAndLoading() {
             i.coutElem();
     }
 }
-void Functions::searchingSubString() {
-    cout << "Enter substring which is start of the message\n";
-    string substr;
-    cin >> substr;
+void Functions::searchingSubString(string subStr) {
     Functions funct;
     funct.readingFromTxt();
     for (auto i : funct.log){
-        if (subString(i.text, substr))
+        if (subString(i.text, subStr))
             i.coutElem();
     }
 }
 //Удаление
-void Functions::deleteOneMessage() {
+void Functions::deleteOneMessage(int id) {
     Functions func;
     func.readingFromTxt();
-    func.coutFromVector();
-    cout << "Enter id of the message which you want to delete\n";
-    int idOfDeletedElement;
-    bool flagFound = false;
-    cin >> idOfDeletedElement;
     for (int i = 0; i < func.log.size(); i++)
-        if (func.log[i].id == idOfDeletedElement) {
+        if (func.log[i].id == id) {
             func.log.erase(func.log.begin() + i);
-            flagFound = true;
         }
     for (int i = 0; i < log.size(); i++)
-        if (log[i].id == idOfDeletedElement) {
+        if (log[i].id == id) {
             log.erase(log.begin() + i);
         }
-    if (flagFound) {
-        clearFiles();
-        func.saveToFile();
-        define_id();
-        cout << "The message was successfully deleted\n";
-    } else
-        cout << "You wrote incorrect id. Try once more\n";
+    clearFiles();
+    func.saveToFile();
+    define_id();
 }
 //Обновление
-void Functions::updateMessage() {
+void Functions::updateOneMessage(int id, string newMessage) {
     Functions func;
     func.readingFromTxt();
-    func.coutFromVector();
-    cout << "Enter id of the message which you want to update\n";
-    int idOfUpdatedElement;
-    bool flagFound = false;
-    cin >> idOfUpdatedElement;
     for (int i = 0; i < func.log.size(); i++)
-        if (func.log[i].id == idOfUpdatedElement) {
-            flagFound = true;
-            string newMessage = "";
-            cout << "Enter new message\n";
-            cin.ignore();
-            getline(cin, newMessage, '\n');
+        if (func.log[i].id == id) {
+
             func.log[i].text = newMessage;
             func.log[i].countWords = countWords(func.log[i].text);
 
@@ -365,12 +320,35 @@ void Functions::updateMessage() {
             func.log[i].timeCreated.sec = (t_tim[17]-'0')*10+t_tim[18]-'0';
             func.log[i].timeCreated.year = (t_tim[20]-'0')*1000+(t_tim[21]-'0')*100+(t_tim[22]-'0')*10+t_tim[23]-'0';
         }
-    if (flagFound) {
-        clearFiles();
-        func.saveToFile();
-        cout << "The message and time was successfully updated\n";
-    } else
-        cout << "You wrote incorrect id. Try once more\n";
+    for (int i = 0; i < log.size(); i++)
+        if (log[i].id == id) {
+
+            log[i].text = newMessage;
+            log[i].countWords = countWords(log[i].text);
+
+            time_t seconds = time(nullptr);
+            tm* timeinfo = localtime(&seconds);
+            char* t_tim = asctime(timeinfo);
+            string m_month = "123";
+            m_month[0] = t_tim[4];
+            m_month[1] = t_tim[5];
+            m_month[2] = t_tim[6];
+            string month[12] = {
+                    "Jan", "Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+            };
+            bool flag = true;
+            for (log[i].timeCreated.month = 0; log[i].timeCreated.month < 12 && flag; log[i].timeCreated.month++)
+                if (month[log[i].timeCreated.month] == m_month)
+                    flag = false;
+            log[i].timeCreated.day= (t_tim[8]-'0')*10+t_tim[9]-'0';
+            log[i].timeCreated.hour = (t_tim[11]-'0')*10+t_tim[12]-'0';
+            log[i].timeCreated.minutes = (t_tim[14]-'0')*10+t_tim[15]-'0';
+            log[i].timeCreated.sec = (t_tim[17]-'0')*10+t_tim[18]-'0';
+            log[i].timeCreated.year = (t_tim[20]-'0')*1000+(t_tim[21]-'0')*100+(t_tim[22]-'0')*10+t_tim[23]-'0';
+        }
+    clearFiles();
+    func.saveToFile();
+    define_id();
 }
 //Вспомогательные
 int Functions::countWords(string s) {
@@ -387,12 +365,9 @@ int Functions::countWords(string s) {
 
     return count;
 }
-void Functions::generateMessages() {
-    cout << "Enter count of messages\n";
-    int countOfMessages;
-    cin >> countOfMessages;
+void Functions::generateMessages(int n) {
     Functions function;
-    for (int i = 0; i < countOfMessages; i++){
+    for (int i = 0; i < n; i++){
         MessageLog mess;
 
         mess.id = MessageLog::count;
@@ -436,7 +411,6 @@ void Functions::generateMessages() {
         mess.loading = mess.loading / (mess.loading + MessageLog::count * rand());
 
         function.log.push_back(mess);
-        mess.coutElem();
     }
     function.saveToFile();
 }

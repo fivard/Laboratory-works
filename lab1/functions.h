@@ -21,7 +21,7 @@ class Functions{
                 "error"
         };
 
-        static void define_id();
+        void define_id();
 
         //Додавання елементів
         void createNewElemAndAddToVector();
@@ -32,20 +32,20 @@ class Functions{
         void readingFromTxt();
         void readingFromBin();
         //Вивід всіх збережених даних;
-        static void coutFromTxt();
-        static void coutFromBin();
+        void coutFromTxt();
+        void coutFromBin();
         void coutFromVector();
         //Пошук за заданими критеріями (див. підваріанти a-c );
-        static void searchingBetweenTime();
-        static void searchingTypeAndLoading();
-        static void searchingSubString();
+        void searchingBetweenTime(FullTime, FullTime);
+        void searchingTypeAndLoading(string, double);
+        void searchingSubString(string);
         //Видалення елементів (додаткові бали)
-        void deleteOneMessage();
+        void deleteOneMessage(int);
         //Модифікація елементів (додаткові бали)
-        static void updateMessage();
+        void updateOneMessage(int, string);
         //Допоміжні
-        static int countWords(string);
-        void generateMessages();
+        int countWords(string);
+        void generateMessages(int);
         static bool subString(string, string);
         static void clearFiles();
 };
