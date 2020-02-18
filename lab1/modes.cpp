@@ -10,6 +10,7 @@ bool interactive(Functions functions){
     bool flag = true;
     string subStr;
     string neededType;
+    string updatedMessage;
     string newMessage;
 
     while (flag) {
@@ -34,7 +35,10 @@ bool interactive(Functions functions){
         cin >> action;
         switch (action) {
             case 1:
-                functions.createNewElemAndAddToVector();
+                cout << "Enter text of message\n";
+                cin.ignore();
+                getline(cin, newMessage, '\n');
+                functions.createNewElemAndAddToVector(newMessage);
                 break;
             case 2:
                 functions.saveToFile();
@@ -79,10 +83,10 @@ bool interactive(Functions functions){
                 functions.coutFromVector();
                 break;
             case 6:
-                functions.coutFromTxt();
+                Functions::coutFromTxt();
                 break;
             case 7:
-                functions.coutFromBin();
+                Functions::coutFromBin();
                 break;
             case 8:
                 cout << "Enter count of messages\n";
@@ -101,7 +105,7 @@ bool interactive(Functions functions){
                 FullTime timeAfter;
                 cin >> timeAfter.year >> timeAfter.month >> timeAfter.day
                     >> timeAfter.hour >> timeAfter.minutes >> timeAfter.sec;
-                functions.searchingBetweenTime(timeBefore, timeAfter);
+                Functions::searchingBetweenTime(timeBefore, timeAfter);
                 break;
             case 10:
                 cout << "Choose a type of message\n"
@@ -110,12 +114,12 @@ bool interactive(Functions functions){
                 cout << "Choose a loading of message\n";
                 double neededLoading;
                 cin >> neededLoading;
-                functions.searchingTypeAndLoading(neededType, neededLoading);
+                Functions::searchingTypeAndLoading(neededType, neededLoading);
                 break;
             case 11:
                 cout << "Enter substring which is start of the message\n";
                 cin >> subStr;
-                functions.searchingSubString(subStr);
+                Functions::searchingSubString(subStr);
                 break;
             case 12:
                 functions.clearFiles();
@@ -158,76 +162,91 @@ bool interactive(Functions functions){
 
 bool demonstration(){
     Functions func;
-    Functions::clearFiles();
-    func.define_id();
+    func.clearFiles();
+    Functions::defineId();
 
     cout << "DEMONSTRATION MODE HAS BEEN STARTED\n";
     cout << "Let's create new message\n";
-    func.demoCreateNewElemAndAddToVector();
+    func.createNewElemAndAddToVector("We have created new mess");
     cout << "Let's see what we have done\n\n";
     func.coutFromVector();
     cout << "\nOkay, save to txt and bin files\n\n";
     func.saveToFile();
     cout << "Now, we have in txt:\n\n";
-    func.coutFromTxt();
+    Functions::coutFromTxt();
     cout << "\n...and in bin:\n\n";
-    func.coutFromBin();
+    Functions::coutFromBin();
     cout << "\nIts too long, let's generate 10 messages quickly and add them to files\n";
     func.generateMessages(10);
     cout << "Now, we have in txt:\n\n";
-    func.coutFromTxt();
+    Functions::coutFromTxt();
     cout << "\nAnd our vector is empty (because we had saved first message and generation is saving messages to files)\n\n";
-    cout << "Let's delete ont message. For example, 5th\n";
+    cout << "Let's delete a message. For example, 5th\n";
     func.deleteOneMessage(5);
     cout << "Now, we have in txt:\n\n";
-    func.coutFromTxt();
+    Functions::coutFromTxt();
     cout << "\nLet's update a message. For example, 7th and enter new message 'Smells like teen spirits'\n\n";
     func.updateOneMessage(7, "Smells like teen spirits");
     cout << "Now, we have in txt:\n\n";
-    func.coutFromTxt();
-    cout << "\nChecking for duplicate. We are going to save some messages from files to vector and then save them back to files\n\n";
-    func.readingFromTxt();
-    cout << "We had read messages\n";
-    func.saveToFile();
-    cout << "It works, don't touch it\n";
+    Functions::coutFromTxt();
     cout << "Last part of demo: searching\n";
-    cout << "\n1) searchingSubString(smells)\n\n";
-    func.searchingSubString("Smells");
+    cout << "\n1) searchingSubString(Smells)\n\n";
+    Functions::searchingSubString("Smells");
     cout << "\n2) searchingTypeAndLoading(warning, 0.1);\n\n";
-    func.searchingTypeAndLoading("warning", 0.1);
+    Functions::searchingTypeAndLoading("warning", 0.1);
     FullTime timeBefore, timeAfter;
     timeBefore.year = func.log[0].timeCreated.year;
     timeBefore.month = func.log[0].timeCreated.month;
     timeBefore.day = func.log[0].timeCreated.day;
     timeBefore.hour = func.log[0].timeCreated.hour;
     timeBefore.minutes = func.log[0].timeCreated.minutes;
-    timeBefore.sec = func.log[0].timeCreated.sec-5;
+    timeBefore.sec = max(func.log[0].timeCreated.sec-5,0);
     timeAfter.year = func.log[0].timeCreated.year;
     timeAfter.month = func.log[0].timeCreated.month;
     timeAfter.day = func.log[0].timeCreated.day;
     timeAfter.hour = func.log[0].timeCreated.hour;
     timeAfter.minutes = func.log[0].timeCreated.minutes;
-    timeAfter.sec = func.log[0].timeCreated.sec+5;
+    timeAfter.sec = min(func.log[0].timeCreated.sec+5,59);
     cout << "\n3) searchingBetweenTime(" << timeBefore.year << "." << timeBefore.month << "." << timeBefore.day << " "
     << timeBefore.hour << ":" << timeBefore.minutes << ":" << timeBefore.sec << ", ";
     cout << timeAfter.year << "." << timeAfter.month << "." << timeAfter.day << " "
          << timeAfter.hour << ":" << timeAfter.minutes << ":" << timeAfter.sec << ")\n\n";
-    func.searchingBetweenTime(timeBefore, timeAfter);
+    Functions::searchingBetweenTime(timeBefore, timeAfter);
 
     cout << "\nTHE END OF DEMO MOD\n";
     cout << "Do you want to choose a mode? y/n\n";
+    bool flag = true;
     char next;
     cin >> next;
-    bool flag = next == 'y';
+    flag = next == 'y';
     return flag;
 }
 
 bool benchmark(){
-    
+    bool flag = true;
+    Functions func;
+    func.clearFiles();
+    MessageLog::count = 0;
+    int countMessages = 10;
 
+    benchData data{0,0,0,0} ;
+    while(data.timeSearching + data.timeReading + data.timeGeneratingAndSaving < 10) {
+        cout << endl << "Count of messages " << countMessages << endl;
+        data = func.forBenchmark(countMessages);
+        double allTime = data.timeGeneratingAndSaving + data.timeReading + data.timeSearching;
+        cout << "timeGeneratingAndSaving = " << data.timeGeneratingAndSaving << endl;
+        cout << "timeReading = " << data.timeReading << endl;
+        cout << "timeSearching = " << data.timeSearching << endl;
+        cout << "All time = " << allTime << endl;
+        cout << "Memory = " << data.memoryOfData << "MB " << endl << endl;
+        if (allTime > 1)
+            countMessages += countMessages;
+        else
+            countMessages *= 10;
+    }
     cout << "Do you want to choose a mode? y/n\n";
     char next;
     cin >> next;
-    bool flag = next == 'y';
+    flag = next == 'y';
     return flag;
 }

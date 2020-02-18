@@ -7,7 +7,6 @@
 using namespace std;
 
 int MessageLog::count = 0;
-bool Functions::usedId[10000] = {};
 
 int main()
 {
@@ -16,7 +15,7 @@ int main()
 
     function.log.clear();
 
-    function.define_id();
+    Functions::defineId();
 
     bool check = true;
 

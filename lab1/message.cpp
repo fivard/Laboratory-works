@@ -10,7 +10,7 @@ using namespace std;
 void MessageLog::coutElem() {
     cout << this->id << ' ' << this->countWords << ' ' << this->text << ' ' << this->timeCreated.year << ' ' << this->timeCreated.month
          << ' ' << this->timeCreated.day << ' ' << this->timeCreated.hour << ' ' << this->timeCreated.minutes << ' ' << this->timeCreated.sec
-         << ' ' << this->typeOfError << ' ' << this->priority << ' ' << this->loading << '\n' ;
+         << ' ' << this->typeOfError << ' ' << this->priority << ' ' << this->loading << ' ' << savedInFiles << '\n' ;
 }
 
 void MessageLog::saveToDisk(){

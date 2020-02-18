@@ -8,11 +8,17 @@
 
 using namespace std;
 
+struct benchData{
+    double timeGeneratingAndSaving;
+    double timeReading;
+    double timeSearching;
+    double memoryOfData;
+
+};
+
 class Functions{
     public:
         vector<MessageLog> log;
-        static bool usedId[10000];
-
         string arrOfErrors[5] = {
                 "debug",
                 "info",
@@ -21,24 +27,24 @@ class Functions{
                 "error"
         };
 
-        void define_id();
+        static void defineId();
 
         //Додавання елементів
-        void createNewElemAndAddToVector();
-        void demoCreateNewElemAndAddToVector();
+        void createNewElemAndAddToVector(string);
         //Зберігання даних (запис даних у файл)
         void saveToFile();
         //Відновлення даних (зчитування даних з файлу);
         void readingFromTxt();
         void readingFromBin();
         //Вивід всіх збережених даних;
-        void coutFromTxt();
-        void coutFromBin();
+        static void coutFromTxt();
+        static void coutFromBin();
         void coutFromVector();
         //Пошук за заданими критеріями (див. підваріанти a-c );
-        void searchingBetweenTime(FullTime, FullTime);
-        void searchingTypeAndLoading(string, double);
-        void searchingSubString(string);
+        static void searchingBetweenTime(FullTime, FullTime);
+        static void searchingTypeAndLoading(string, double);
+        static void searchingSubString(string);
+        void benchSearchingWithSubstr(string);
         //Видалення елементів (додаткові бали)
         void deleteOneMessage(int);
         //Модифікація елементів (додаткові бали)
@@ -47,7 +53,9 @@ class Functions{
         int countWords(string);
         void generateMessages(int);
         static bool subString(string, string);
-        static void clearFiles();
+        void clearFiles();
+        benchData forBenchmark(int);//generate N message, save to files,
+                            //reading from files and searching random element
 };
 
 #endif //LABOR1_FUNCTIONS_H
@@ -57,5 +65,5 @@ class Functions{
 //readingFromTxt +
 //readingFromBin +
 //coutAllData +
-//searching -
+//searching +
 //checking id +

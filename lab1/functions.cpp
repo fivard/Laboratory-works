@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void Functions::define_id() {
+void Functions::defineId() {
     ifstream file("data.txt");
     MessageLog mess;
     bool flag = true;
@@ -16,9 +16,8 @@ void Functions::define_id() {
         MessageLog::count = 0;
         return;
     }
-    while(file >> mess.id >> mess.countWords && flag){
+    while(file >> mess.id >> mess.countWords && true){
         mess.text = "";
-        usedId[mess.id] = true;
         string s;
         MessageLog::count = max(MessageLog::count, mess.id+1);
         for (int i = 0; i < mess.countWords; i++)
@@ -99,6 +98,8 @@ void Functions::readingFromTxt() {
         file >> mess.timeCreated.year  >> mess.timeCreated.month
         >> mess.timeCreated.day  >> mess.timeCreated.hour  >> mess.timeCreated.minutes  >> mess.timeCreated.sec
         >> mess.typeOfError  >> mess.priority  >> mess.loading;
+        mess.savedInFiles = true;
+
         log.push_back(mess);
     }
     file.close();
@@ -138,6 +139,7 @@ void Functions::readingFromBin(){
         file.read((char *) &mess.priority, sizeof(mess.priority)); //priority
 
         file.read((char *) &mess.loading, sizeof(mess.loading)); //loading
+        mess.savedInFiles = true;
         log.push_back(mess);
 
         mess.text.clear();
@@ -146,16 +148,14 @@ void Functions::readingFromBin(){
     file.close();
 };
 //Создание
-void Functions::createNewElemAndAddToVector() {
+void Functions::createNewElemAndAddToVector(string message) {
     MessageLog mess;
     Functions function;
 
     mess.id = MessageLog::count;
     MessageLog::count++;
 
-    cout << "Enter text of message\n";
-    cin.ignore();
-    getline(cin, mess.text, '\n');
+    mess.text = message;
     mess.countWords = function.countWords(mess.text);
 
     time_t seconds = time(nullptr);
@@ -186,61 +186,57 @@ void Functions::createNewElemAndAddToVector() {
     mess.loading = rand();
     mess.loading = mess.loading / (mess.loading + MessageLog::count * rand());
 
-    Functions::log.push_back(mess);
-}
-void Functions::demoCreateNewElemAndAddToVector() {
-    MessageLog mess;
-    Functions function;
-
-    mess.id = MessageLog::count;
-    MessageLog::count++;
-
-    mess.text = "We has created message here";
-    mess.countWords = function.countWords(mess.text);
-
-    time_t seconds = time(nullptr);
-    tm* timeinfo = localtime(&seconds);
-    char* t_tim = asctime(timeinfo);
-    string m_month = "123";
-    m_month[0] = t_tim[4];
-    m_month[1] = t_tim[5];
-    m_month[2] = t_tim[6];
-    string month[12] = {
-            "Jan", "Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-    };
-    bool flag = true;
-    for (mess.timeCreated.month = 0; mess.timeCreated.month < 12 && flag; mess.timeCreated.month++)
-        if (month[mess.timeCreated.month] == m_month)
-            flag = false;
-    mess.timeCreated.day= (t_tim[8]-'0')*10+t_tim[9]-'0';
-    mess.timeCreated.hour = (t_tim[11]-'0')*10+t_tim[12]-'0';
-    mess.timeCreated.minutes = (t_tim[14]-'0')*10+t_tim[15]-'0';
-    mess.timeCreated.sec = (t_tim[17]-'0')*10+t_tim[18]-'0';
-    mess.timeCreated.year = (t_tim[20]-'0')*1000+(t_tim[21]-'0')*100+(t_tim[22]-'0')*10+t_tim[23]-'0';
-
-
-    mess.typeOfError = arrOfErrors[rand() % 5];
-
-    mess.priority = (MessageLog::count * rand()) % 200;
-
-    mess.loading = rand();
-    mess.loading = mess.loading / (mess.loading + MessageLog::count * rand());
+    mess.savedInFiles = false;
 
     Functions::log.push_back(mess);
 }
 //Сохранение
 void Functions::saveToFile() {
-    int count = 0;
-    for(auto i : log) {
-        if (usedId[i.id] == true){
-            cout << "Message with id " << i.id << " is already saved. Skipped.\n";
+    ofstream file("data.txt", ios_base::app);
+    ofstream bin("binary.txt", ios_base::binary|ios_base::app);
+    if (!file){
+        cout << "txt is closed \n";
+        return;
+    }
+    if (!bin){
+        cout << "bin is closed \n";
+        return;
+    }
+    for(auto & i : log) {
+        if (i.savedInFiles) {
+            cout << "Element with id " << i.id << " is already saved. Skipped.\n";
             continue;
         }
-        count++;
-        i.saveToDisk();
-        usedId[i.id] = true;
+        i.savedInFiles = true;
+
+        file << i.id << ' ' << i.countWords << ' ' << i.text << ' ' << i.timeCreated.year << ' ' << i.timeCreated.month
+             << ' ' << i.timeCreated.day << ' ' << i.timeCreated.hour << ' ' << i.timeCreated.minutes << ' ' << i.timeCreated.sec
+             << ' ' << i.typeOfError << ' ' << i.priority << ' ' << i.loading << '\n' ;
+
+        bin.write((char*)&i.id, sizeof(i.id)); //id
+
+        int lengthText = i.text.size();
+        bin.write((char*)&i.countWords, sizeof(i.countWords));
+        bin.write((char*)&lengthText, sizeof(lengthText));
+        bin << i.text; //text
+
+        bin.write((char*)&i.timeCreated.year, sizeof(i.timeCreated.year));
+        bin.write((char*)&i.timeCreated.month, sizeof(i.timeCreated.month));
+        bin.write((char*)&i.timeCreated.day, sizeof(i.timeCreated.day));
+        bin.write((char*)&i.timeCreated.hour, sizeof(i.timeCreated.hour));
+        bin.write((char*)&i.timeCreated.minutes, sizeof(i.timeCreated.minutes));
+        bin.write((char*)&i.timeCreated.sec, sizeof(i.timeCreated.sec)); //time
+
+        int lengthTypeOfError = i.typeOfError.size();
+        bin.write((char*)&lengthTypeOfError, sizeof(lengthTypeOfError));
+        bin << i.typeOfError; //typeOfError
+
+        bin.write((char*)&i.priority, sizeof(i.priority)); //priority
+
+        bin.write((char*)&i.loading, sizeof(i.loading)); //loading
     }
-    log.clear();
+    file.close();
+    bin.close();
 }
 //Поиск по критериям
 void Functions::searchingBetweenTime(FullTime timeBefore, FullTime timeAfter) {
@@ -274,6 +270,14 @@ void Functions::searchingSubString(string subStr) {
             i.coutElem();
     }
 }
+void Functions::benchSearchingWithSubstr(string subStr) {
+    Functions funct;
+    cout << "Element has found: " << endl;
+    for (auto i : funct.log){
+        if (subString(i.text, subStr))
+            i.coutElem();
+    }
+}
 //Удаление
 void Functions::deleteOneMessage(int id) {
     Functions func;
@@ -286,45 +290,19 @@ void Functions::deleteOneMessage(int id) {
         if (log[i].id == id) {
             log.erase(log.begin() + i);
         }
-    clearFiles();
+    func.clearFiles();
     func.saveToFile();
-    define_id();
+    defineId();
 }
 //Обновление
 void Functions::updateOneMessage(int id, string newMessage) {
     Functions func;
     func.readingFromTxt();
-    for (int i = 0; i < func.log.size(); i++)
-        if (func.log[i].id == id) {
+    for (auto & i : func.log)
+        if (i.id == id) {
 
-            func.log[i].text = newMessage;
-            func.log[i].countWords = countWords(func.log[i].text);
-
-            time_t seconds = time(nullptr);
-            tm* timeinfo = localtime(&seconds);
-            char* t_tim = asctime(timeinfo);
-            string m_month = "123";
-            m_month[0] = t_tim[4];
-            m_month[1] = t_tim[5];
-            m_month[2] = t_tim[6];
-            string month[12] = {
-                    "Jan", "Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-            };
-            bool flag = true;
-            for (func.log[i].timeCreated.month = 0; func.log[i].timeCreated.month < 12 && flag; func.log[i].timeCreated.month++)
-                if (month[func.log[i].timeCreated.month] == m_month)
-                    flag = false;
-            func.log[i].timeCreated.day= (t_tim[8]-'0')*10+t_tim[9]-'0';
-            func.log[i].timeCreated.hour = (t_tim[11]-'0')*10+t_tim[12]-'0';
-            func.log[i].timeCreated.minutes = (t_tim[14]-'0')*10+t_tim[15]-'0';
-            func.log[i].timeCreated.sec = (t_tim[17]-'0')*10+t_tim[18]-'0';
-            func.log[i].timeCreated.year = (t_tim[20]-'0')*1000+(t_tim[21]-'0')*100+(t_tim[22]-'0')*10+t_tim[23]-'0';
-        }
-    for (int i = 0; i < log.size(); i++)
-        if (log[i].id == id) {
-
-            log[i].text = newMessage;
-            log[i].countWords = countWords(log[i].text);
+            i.text = newMessage;
+            i.countWords = countWords(i.text);
 
             time_t seconds = time(nullptr);
             tm* timeinfo = localtime(&seconds);
@@ -337,18 +315,44 @@ void Functions::updateOneMessage(int id, string newMessage) {
                     "Jan", "Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
             };
             bool flag = true;
-            for (log[i].timeCreated.month = 0; log[i].timeCreated.month < 12 && flag; log[i].timeCreated.month++)
-                if (month[log[i].timeCreated.month] == m_month)
+            for (i.timeCreated.month = 0; i.timeCreated.month < 12 && flag; i.timeCreated.month++)
+                if (month[i.timeCreated.month] == m_month)
                     flag = false;
-            log[i].timeCreated.day= (t_tim[8]-'0')*10+t_tim[9]-'0';
-            log[i].timeCreated.hour = (t_tim[11]-'0')*10+t_tim[12]-'0';
-            log[i].timeCreated.minutes = (t_tim[14]-'0')*10+t_tim[15]-'0';
-            log[i].timeCreated.sec = (t_tim[17]-'0')*10+t_tim[18]-'0';
-            log[i].timeCreated.year = (t_tim[20]-'0')*1000+(t_tim[21]-'0')*100+(t_tim[22]-'0')*10+t_tim[23]-'0';
+            i.timeCreated.day= (t_tim[8]-'0')*10+t_tim[9]-'0';
+            i.timeCreated.hour = (t_tim[11]-'0')*10+t_tim[12]-'0';
+            i.timeCreated.minutes = (t_tim[14]-'0')*10+t_tim[15]-'0';
+            i.timeCreated.sec = (t_tim[17]-'0')*10+t_tim[18]-'0';
+            i.timeCreated.year = (t_tim[20]-'0')*1000+(t_tim[21]-'0')*100+(t_tim[22]-'0')*10+t_tim[23]-'0';
         }
-    clearFiles();
+    for (auto & i : log)
+        if (i.id == id) {
+
+            i.text = newMessage;
+            i.countWords = countWords(i.text);
+
+            time_t seconds = time(nullptr);
+            tm* timeinfo = localtime(&seconds);
+            char* t_tim = asctime(timeinfo);
+            string m_month = "123";
+            m_month[0] = t_tim[4];
+            m_month[1] = t_tim[5];
+            m_month[2] = t_tim[6];
+            string month[12] = {
+                    "Jan", "Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+            };
+            bool flag = true;
+            for (i.timeCreated.month = 0; i.timeCreated.month < 12 && flag; i.timeCreated.month++)
+                if (month[i.timeCreated.month] == m_month)
+                    flag = false;
+            i.timeCreated.day= (t_tim[8]-'0')*10+t_tim[9]-'0';
+            i.timeCreated.hour = (t_tim[11]-'0')*10+t_tim[12]-'0';
+            i.timeCreated.minutes = (t_tim[14]-'0')*10+t_tim[15]-'0';
+            i.timeCreated.sec = (t_tim[17]-'0')*10+t_tim[18]-'0';
+            i.timeCreated.year = (t_tim[20]-'0')*1000+(t_tim[21]-'0')*100+(t_tim[22]-'0')*10+t_tim[23]-'0';
+        }
+    func.clearFiles();
     func.saveToFile();
-    define_id();
+    defineId();
 }
 //Вспомогательные
 int Functions::countWords(string s) {
@@ -409,11 +413,13 @@ void Functions::generateMessages(int n) {
 
         mess.loading = rand();
         mess.loading = mess.loading / (mess.loading + MessageLog::count * rand());
+        mess.savedInFiles = false;
 
         function.log.push_back(mess);
     }
     function.saveToFile();
 }
+
 bool Functions::subString(string main, string substring){
     for (int i = 0; i < substring.size(); i++)
         if (main[i] != substring[i])
@@ -423,10 +429,45 @@ bool Functions::subString(string main, string substring){
 void Functions::clearFiles() {
     ofstream fileTxt("data.txt", ios::out);
     fileTxt.close();
-    MessageLog::count = 0;
-    for (int i = 0; i < 10000; i++)
-        usedId[i] = 0;
     ofstream fileBin("binary.txt", ios::out);
     fileBin.close();
+    for (auto & i : log){
+        i.savedInFiles = false;
+        MessageLog::count = max(MessageLog::count, i.id);
+    }
+}
+benchData Functions::forBenchmark(int N) {
+    clearFiles();
+    log.clear();
+    MessageLog::count = 0;
+
+    double timeGeneratingAndSavingStart = clock();
+    generateMessages(N);
+    double timeGeneratingAndSavingEnd = clock();
+    double timeGeneratingAndSaving = (timeGeneratingAndSavingEnd - timeGeneratingAndSavingStart) / CLOCKS_PER_SEC;
+
+    double timeReadingMessStart = clock();
+    readingFromTxt();
+    double timeReadingMessEnd = clock();
+    double timeReading = (timeReadingMessEnd - timeReadingMessStart) / CLOCKS_PER_SEC;
+
+    double timeSearchingMessStart = clock();
+    benchSearchingWithSubstr("dolbaeb");
+    double timeSearchingMessEnd = clock();
+    double timeSearching = (timeSearchingMessEnd- timeSearchingMessStart) / CLOCKS_PER_SEC;
+
+    benchData data{};
+    data.timeGeneratingAndSaving = timeGeneratingAndSaving;
+    data.timeReading = timeReading;
+    data.timeSearching = timeSearching;
+    fstream file("data.txt");
+    double size = 0;
+    file.seekg (0, std::ios::end);
+    size = file.tellg();
+    file.close();
+    data.memoryOfData = size/1024/1024;
+
+    return data;
+
 }
 

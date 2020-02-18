@@ -8,6 +8,7 @@
 #include <ctime>
 #include <fstream>
 #include <vector>
+#include <map>
 
 class FullTime{
     public:
@@ -34,6 +35,7 @@ class MessageLog
         std::string typeOfError;
         int priority;
         double loading;
+        bool savedInFiles;
 
         void coutElem();
         void saveToDisk();
