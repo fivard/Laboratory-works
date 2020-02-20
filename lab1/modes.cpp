@@ -129,12 +129,14 @@ bool interactive(Functions functions){
                 functions.log.clear();
                 break;
             case 14:
+                functions.coutFromTxt();
                 cout << "Enter id of the message which you want to delete\n";
                 int idOfDeletedElement;
                 cin >> idOfDeletedElement;
                 functions.deleteOneMessage(idOfDeletedElement);
                 break;
             case 15:
+                functions.coutFromTxt();
                 cout << "Enter id of the message which you want to update\n";
                 int idOfUpdatedElement;
                 cin >> idOfUpdatedElement;
@@ -180,7 +182,6 @@ bool demonstration(){
     func.generateMessages(10);
     cout << "Now, we have in txt:\n\n";
     Functions::coutFromTxt();
-    cout << "\nAnd our vector is empty (because we had saved first message and generation is saving messages to files)\n\n";
     cout << "Let's delete a message. For example, 5th\n";
     func.deleteOneMessage(5);
     cout << "Now, we have in txt:\n\n";
@@ -225,15 +226,16 @@ bool demonstration(){
 bool benchmark(){
     bool flag = true;
     Functions func;
-    func.clearFiles();
-    MessageLog::count = 0;
     int countMessages = 10;
+    double allTime = 0;
 
     benchData data{0,0,0,0} ;
-    while(data.timeSearching + data.timeReading + data.timeGeneratingAndSaving < 10) {
+    while(allTime < 10) {
+        func.clearFiles();
+        MessageLog::count = 0;
         cout << endl << "Count of messages " << countMessages << endl;
         data = func.forBenchmark(countMessages);
-        double allTime = data.timeGeneratingAndSaving + data.timeReading + data.timeSearching;
+        allTime = data.timeGeneratingAndSaving + data.timeReading + data.timeSearching;
         cout << "timeGeneratingAndSaving = " << data.timeGeneratingAndSaving << endl;
         cout << "timeReading = " << data.timeReading << endl;
         cout << "timeSearching = " << data.timeSearching << endl;

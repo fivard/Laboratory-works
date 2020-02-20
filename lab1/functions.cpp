@@ -181,10 +181,10 @@ void Functions::createNewElemAndAddToVector(string message) {
 
     mess.typeOfError = arrOfErrors[rand() % 5];
 
-    mess.priority = (MessageLog::count * rand()) % 200;
+    mess.priority = rand() % 200;
 
     mess.loading = rand();
-    mess.loading = mess.loading / (mess.loading + MessageLog::count * rand());
+    mess.loading = mess.loading / (mess.loading + rand());
 
     mess.savedInFiles = false;
 
@@ -271,11 +271,9 @@ void Functions::searchingSubString(string subStr) {
     }
 }
 void Functions::benchSearchingWithSubstr(string subStr) {
-    Functions funct;
-    cout << "Element has found: " << endl;
-    for (auto i : funct.log){
+    for (auto i : log){
         if (subString(i.text, subStr))
-            i.coutElem();
+            cout << "Element has found: " << endl, i.coutElem();
     }
 }
 //Удаление
@@ -437,8 +435,6 @@ void Functions::clearFiles() {
     }
 }
 benchData Functions::forBenchmark(int N) {
-    clearFiles();
-    log.clear();
     MessageLog::count = 0;
 
     double timeGeneratingAndSavingStart = clock();
@@ -450,9 +446,9 @@ benchData Functions::forBenchmark(int N) {
     readingFromTxt();
     double timeReadingMessEnd = clock();
     double timeReading = (timeReadingMessEnd - timeReadingMessStart) / CLOCKS_PER_SEC;
-
+    cout << "log " << log.size() << endl;
     double timeSearchingMessStart = clock();
-    benchSearchingWithSubstr("dolbaeb");
+    benchSearchingWithSubstr("abcd");
     double timeSearchingMessEnd = clock();
     double timeSearching = (timeSearchingMessEnd- timeSearchingMessStart) / CLOCKS_PER_SEC;
 
