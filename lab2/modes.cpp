@@ -5,7 +5,7 @@
 #include "modes.h"
 #include "source.h"
 
-
+///---------------------Interactive----------------------///
 void interactive(){
     bool isContinuedInteractive = true;
     while (isContinuedInteractive) {
@@ -23,14 +23,6 @@ void interactive(){
         std::cin >> userAnswer;
         isContinuedInteractive = userAnswer == "y";
     }
-}
-
-void demonstration(){
-
-}
-
-void benchmark(){
-
 }
 
 void chooseStructure(int action){
@@ -86,7 +78,7 @@ void chooseArrayAction(int action, Stack<Circle>& stack){
             stack.popFromArr();
             break;
         case 4:
-            stack.peekOfArr();
+            std::cout << stack.peekOfArr() << std::endl;
             break;
         case 5:
             std::cout << stack.isEmptyArr() << std::endl;
@@ -143,7 +135,7 @@ void chooseVectorAction(int action, Stack<Circle>& stack){
             stack.popFromVec();
             break;
         case 4:
-            stack.peekOfVec();
+            std::cout << stack.peekOfVec() << std::endl;
             break;
         case 5:
             std::cout << stack.isEmptyVec() << std::endl;
@@ -200,7 +192,7 @@ void chooseListAction(int action, Stack<Circle>& stack){
             stack.popFromList();
             break;
         case 4:
-            stack.peekOfList();
+            std::cout << stack.peekOfList() << std::endl;
             break;
         case 5:
             std::cout << stack.isEmptyList() << std::endl;
@@ -218,6 +210,119 @@ void chooseListAction(int action, Stack<Circle>& stack){
             std::cout << "Wrong number\n";
             break;
     }
+}
+
+///---------------------DEMO-------------------///
+
+void demonstration(){
+    std::cout << "------------------ARRAY DEMO--------------------\n" << std::endl;
+    demoArr();
+    std::cout << "------------------VECTOR DEMO--------------------\n"<< std::endl;
+    demoVec();
+    std::cout << "------------------LINKEDLIST DEMO--------------------\n"<< std::endl;
+    demoList();
+    std::cout << std::endl;
+}
+
+void demoArr(){
+    Stack<Circle> stack;
+    std::cout << "We have created Stack with type Circle(x,y,radius)\n"
+              << "Let's push an element to stack\n";
+    Circle tempCircle(1,2,3);
+    stack.pushToArr(tempCircle);
+    std::cout << "Now we have in stack:\n";
+    stack.coutArr();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "generate 10 elements to stack\n";
+    stack.generateToArr(10);
+    stack.coutArr();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "pop from stack\n";
+    stack.popFromArr();
+    stack.coutArr();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "peek of stack\n";
+    std::cout << stack.peekOfArr() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "is_empty stack?\n";
+    std::cout << stack.isEmptyArr() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "create_empty stack\n";
+    stack.createEmptyArr();
+    stack.coutArr();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "is_empty stack?\n";
+    std::cout << stack.isEmptyArr() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+}
+
+void demoVec(){
+    Stack<Circle> stack;
+    std::cout << "We have created Stack with type Circle(x,y,radius)\n"
+              << "Let's push an element to stack\n";
+    Circle tempCircle(1,2,3);
+    stack.pushToVec(tempCircle);
+    std::cout << "Now we have in stack:\n";
+    stack.coutVec();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "generate 10 elements to stack\n";
+    stack.generateToVec(10);
+    stack.coutVec();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "pop from stack\n";
+    stack.popFromVec();
+    stack.coutVec();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "peek of stack\n";
+    std::cout << stack.peekOfVec() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "is_empty stack?\n";
+    std::cout << stack.isEmptyVec() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "create_empty stack\n";
+    stack.createEmptyVec();
+    stack.coutVec();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "is_empty stack?\n";
+    std::cout << stack.isEmptyVec() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+}
+
+void demoList(){
+    Stack<Circle> stack;
+    std::cout << "We have created Stack with type Circle(x,y,radius)\n"
+              << "Let's push an element to stack\n";
+    Circle tempCircle(1,2,3);
+    stack.pushToList(tempCircle);
+    std::cout << "Now we have in stack:\n";
+    stack.coutList();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "generate 10 elements to stack\n";
+    stack.generateToList(10);
+    stack.coutList();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "pop from stack\n";
+    stack.popFromList();
+    stack.coutList();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "peek of stack\n";
+    std::cout << stack.peekOfList() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "is_empty stack?\n";
+    std::cout << stack.isEmptyList() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "create_empty stack\n";
+    stack.createEmptyList();
+    stack.coutList();
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "is_empty stack?\n";
+    std::cout << stack.isEmptyList() << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+}
+
+///-----------------------BENCHMARK--------------------///
+void benchmark(){
+
 }
 
 Circle inputCircle(){

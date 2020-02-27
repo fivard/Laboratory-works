@@ -9,23 +9,23 @@
 
 void interactive();
 
-void demonstration();
-
-void benchmark();
-
 void chooseStructure(int action);
 
 void workWithArray();
-
 void chooseArrayAction(int action, Stack<Circle>& stack);
-
 void workWithVector();
-
 void chooseVectorAction(int action, Stack<Circle>& stack);
-
 void workWithList();
-
 void chooseListAction(int action, Stack<Circle>& stack);
+
+void demonstration();
+
+void demoArr();
+void demoVec();
+void demoList();
+
+void benchmark();
+
 
 Circle inputCircle();
 #endif //LAB2_MODES_H

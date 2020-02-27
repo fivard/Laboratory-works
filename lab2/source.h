@@ -15,7 +15,6 @@ const int MAX_ARR_SIZE = 10000;
 
 class Circle{
 private:
-
     class Point{
     public:
         double x, y;
@@ -52,10 +51,11 @@ public:
         radius = newRadius;
     }
 
-    friend std::ostream & operator<<(std::ostream& out, Circle& circle){
-        out << circle.point.x << ' ' << circle.point.y << ' ' << circle.radius;
+    friend std::ostream & operator<<(std::ostream& out, const Circle& circle){
+        out << "x = " << circle.point.x << ", y = " << circle.point.y << ", radius = " << circle.radius;
         return out;
     }
+
     Circle& operator=(const Circle& circle){
         if (this == &circle){
             return *this;
@@ -124,7 +124,6 @@ public:
     }
 
     T peek(){
-        std::cout << head->value << std::endl;
         return head->value;
     }
 
@@ -209,22 +208,20 @@ public:
     }
     ///peek
     T peekOfArr(){
-        std::cout << arr[insertionIndexArr-1] << std::endl;
         return arr[insertionIndexArr-1];
     }
     T peekOfVec(){
-        std::cout << arr[insertionIndexVec-1] << std::endl;
         return vec[insertionIndexVec-1];
     }
     T peekOfList(){
-        list.peek();
+        return list.peek();
     }
     ///is_empty
     bool isEmptyArr(){
         return insertionIndexArr == 0;
     }
     bool isEmptyVec(){
-        return insertionIndexArr == 0;
+        return insertionIndexVec == 0;
     }
     bool isEmptyList(){
         return list.isEmpty();
