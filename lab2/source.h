@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <iostream>
 
-const int MAX_ARR_SIZE = 10000;
+const int MAX_ARR_SIZE = 50000;
 
 ///Circle
 
@@ -33,21 +33,6 @@ public:
     Circle(double newX, double newY, double newRadius) {
         point.x = newX;
         point.y = newY;
-        radius = newRadius;
-    }
-
-    Point getPoint(){
-        return point;
-    }
-    void setPoint(double newX, double newY) {
-        point.x = newX;
-        point.y = newY;
-    }
-
-    double getRadius(){
-        return  radius;
-    }
-    void setRadius(double newRadius){
         radius = newRadius;
     }
 
@@ -82,7 +67,7 @@ private:
         Node *next;
         Node *prev;
 
-        Node(T value) {
+        explicit Node(T value) {
             this->value = value;
             next = prev = nullptr;
         }
@@ -95,6 +80,10 @@ public:
     LinkedList(){
         head = nullptr;
         length = 0;
+    }
+
+    size_t getLength(){
+        return length;
     }
 
     void createEmpty(){
@@ -182,7 +171,10 @@ public:
         insertionIndexArr++;
     }
     void pushToVec(T newElement){
-        vec.push_back(newElement);
+        if (vec.size() > insertionIndexVec)
+            vec[insertionIndexVec] = newElement;
+        else
+            vec.push_back(newElement);
         insertionIndexVec++;
     }
     void pushToList(T newElement){
@@ -270,6 +262,16 @@ public:
             temp = rand();
             pushToList(temp);
         }
+    }
+
+    int sizeOfArr(){
+        return sizeof(T)*insertionIndexArr/1024;
+    }
+    int sizeOfVec(){
+        return sizeof(vec)*insertionIndexVec/1024;
+    }
+    int sizeOfList(){
+        return sizeof(list)*list.getLength()/1024;
     }
 
 };

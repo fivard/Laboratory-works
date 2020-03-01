@@ -9,23 +9,19 @@
 void interactive(){
     bool isContinuedInteractive = true;
     while (isContinuedInteractive) {
-        std::cout << "Select data structure:\n"
+        std::cout << "\nSelect data structure:\n"
                   << "1 - stack with new array\n"
                   << "2 - stack with new vector\n"
-                  << "3 - stack with new list\n";
+                  << "3 - stack with new list\n"
+                  << "4 - exit interactive mode\n\n";
 
         int action;
         std::cin >> action;
-        chooseStructure(action);
-
-        std::cout << "Do you want to continue works in interactive mode? y/n\n";
-        std::string userAnswer;
-        std::cin >> userAnswer;
-        isContinuedInteractive = userAnswer == "y";
+        isContinuedInteractive = chooseStructure(action);
     }
 }
 
-void chooseStructure(int action){
+bool chooseStructure(int action){
     switch(action){
         case 1:
             workWithArray();
@@ -36,36 +32,35 @@ void chooseStructure(int action){
         case 3:
             workWithList();
             break;
+        case 4:
+            return false;
         default:
             std::cout << "Wrong number\n";
     }
+    return true;
 }
 
 void workWithArray(){
     Stack<Circle> stack;
     bool isContinuedArray = true;
     while (isContinuedArray) {
-        std::cout << "Select action\n"
+        std::cout << "\nSelect action\n"
                   << "1 - create_empty\n"
                   << "2 - push\n"
                   << "3 - pop\n"
                   << "4 - peek\n"
                   << "5 - is_empty\n"
                   << "6 - cout array\n"
-                  << "7 - generate N elements and push\n";
+                  << "7 - generate N elements and push\n"
+                  << "8 - exit array structure stack\n\n";
 
         int action;
         std::cin >> action;
-        chooseArrayAction(action, stack);
-
-        std::cout << "Do you want to continue works with array? y/n\n";
-        std::string userAnswer;
-        std::cin >> userAnswer;
-        isContinuedArray = userAnswer == "y";
+        isContinuedArray = chooseArrayAction(action, stack);
     }
 }
 
-void chooseArrayAction(int action, Stack<Circle>& stack){
+bool chooseArrayAction(int action, Stack<Circle>& stack){
 
     switch (action){
         case 1:
@@ -81,7 +76,10 @@ void chooseArrayAction(int action, Stack<Circle>& stack){
             std::cout << stack.peekOfArr() << std::endl;
             break;
         case 5:
-            std::cout << stack.isEmptyArr() << std::endl;
+            if (stack.isEmptyArr() == 0)
+                std::cout << "Array isn't empty\n" << std::endl;
+            else
+                std::cout << "Array is empty\n" << std::endl;
             break;
         case 6:
             stack.coutArr();
@@ -92,38 +90,37 @@ void chooseArrayAction(int action, Stack<Circle>& stack){
             std::cin >> countOfElements;
             stack.generateToArr(countOfElements);
             break;
+        case 8:
+            return false;
         default:
             std::cout << "Wrong number\n";
             break;
+
     }
+    return true;
 }
 
 void workWithVector(){
     Stack<Circle> stack;
     bool isContinuedVector = true;
     while (isContinuedVector) {
-        std::cout << "Select action\n"
+        std::cout << "\nSelect action\n"
                   << "1 - create_empty\n"
                   << "2 - push\n"
                   << "3 - pop\n"
                   << "4 - peek\n"
                   << "5 - is_empty\n"
                   << "6 - cout vector\n"
-                  << "7 - generate N elements and push\n";
+                  << "7 - generate N elements and push\n"
+                  << "8 - exit vector structure stack\n\n";
 
         int action;
         std::cin >> action;
-        chooseVectorAction(action, stack);
-
-        std::cout << "Do you want to continue works with vector? y/n\n";
-        std::string userAnswer;
-        std::cin >> userAnswer;
-        isContinuedVector = userAnswer == "y";
+        isContinuedVector = chooseVectorAction(action, stack);
     }
 }
 
-void chooseVectorAction(int action, Stack<Circle>& stack){
-
+bool chooseVectorAction(int action, Stack<Circle>& stack){
     switch (action){
         case 1:
             stack.createEmptyVec();
@@ -138,7 +135,10 @@ void chooseVectorAction(int action, Stack<Circle>& stack){
             std::cout << stack.peekOfVec() << std::endl;
             break;
         case 5:
-            std::cout << stack.isEmptyVec() << std::endl;
+            if (stack.isEmptyVec() == 0)
+                std::cout << "Vector isn't empty\n" << std::endl;
+            else
+                std::cout << "Vector is empty\n" << std::endl;
             break;
         case 6:
             stack.coutVec();
@@ -149,37 +149,36 @@ void chooseVectorAction(int action, Stack<Circle>& stack){
             std::cin >> countOfElements;
             stack.generateToVec(countOfElements);
             break;
+        case 8:
+            return false;
         default:
             std::cout << "Wrong number\n";
             break;
     }
+    return true;
 }
 
 void workWithList(){
     Stack<Circle> stack;
     bool isContinuedList = true;
     while (isContinuedList) {
-        std::cout << "Select action\n"
+        std::cout << "\nSelect action\n"
                   << "1 - create_empty\n"
                   << "2 - push\n"
                   << "3 - pop\n"
                   << "4 - peek\n"
                   << "5 - is_empty\n"
                   << "6 - cout list\n"
-                  << "7 - generate N elements and push\n";
+                  << "7 - generate N elements and push\n"
+                  << "8 - exit linked list structure stack\n\n";
 
         int action;
         std::cin >> action;
-        chooseListAction(action, stack);
-
-        std::cout << "Do you want to continue works with list? y/n\n";
-        std::string userAnswer;
-        std::cin >> userAnswer;
-        isContinuedList = userAnswer == "y";
+        isContinuedList = chooseListAction(action, stack);
     }
 }
 
-void chooseListAction(int action, Stack<Circle>& stack){
+bool chooseListAction(int action, Stack<Circle>& stack){
 
     switch (action){
         case 1:
@@ -195,7 +194,10 @@ void chooseListAction(int action, Stack<Circle>& stack){
             std::cout << stack.peekOfList() << std::endl;
             break;
         case 5:
-            std::cout << stack.isEmptyList() << std::endl;
+            if (stack.isEmptyList() == 0)
+                std::cout << "List isn't empty\n" << std::endl;
+            else
+                std::cout << "List is empty\n" << std::endl;
             break;
         case 6:
             stack.coutList();
@@ -206,125 +208,282 @@ void chooseListAction(int action, Stack<Circle>& stack){
             std::cin >> countOfElements;
             stack.generateToList(countOfElements);
             break;
+        case 8:
+            return false;
         default:
             std::cout << "Wrong number\n";
             break;
     }
+    return true;
 }
 
 ///---------------------DEMO-------------------///
 
 void demonstration(){
-    std::cout << "------------------ARRAY DEMO--------------------\n" << std::endl;
-    demoArr();
-    std::cout << "------------------VECTOR DEMO--------------------\n"<< std::endl;
-    demoVec();
-    std::cout << "------------------LINKEDLIST DEMO--------------------\n"<< std::endl;
-    demoList();
+    Stack<Circle> stack;
+    std::cout << "We have created Stack with type Circle(x,y,radius)\n";
+    std::cout << "----------------------------ARRAY DEMO----------------------------\n" << std::endl;
+    demoArr(stack);
+    std::cout << "----------------------------VECTOR DEMO---------------------------\n"<< std::endl;
+    demoVec(stack);
+    std::cout << "----------------------------LINKEDLIST DEMO-----------------------\n"<< std::endl;
+    demoList(stack);
     std::cout << std::endl;
 }
 
-void demoArr(){
-    Stack<Circle> stack;
+void demoArr(Stack<Circle> stack){
     std::cout << "We have created Stack with type Circle(x,y,radius)\n"
               << "Let's push an element to stack\n";
     Circle tempCircle(1,2,3);
     stack.pushToArr(tempCircle);
     std::cout << "Now we have in stack:\n";
     stack.coutArr();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "generate 10 elements to stack\n";
     stack.generateToArr(10);
     stack.coutArr();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "pop from stack\n";
     stack.popFromArr();
     stack.coutArr();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "peek of stack\n";
     std::cout << stack.peekOfArr() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "is_empty stack?\n";
     std::cout << stack.isEmptyArr() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "create_empty stack\n";
     stack.createEmptyArr();
     stack.coutArr();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "is_empty stack?\n";
     std::cout << stack.isEmptyArr() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
 }
 
-void demoVec(){
-    Stack<Circle> stack;
-    std::cout << "We have created Stack with type Circle(x,y,radius)\n"
-              << "Let's push an element to stack\n";
+void demoVec(Stack<Circle> stack){
+    std::cout << "Let's push an element to stack\n";
     Circle tempCircle(1,2,3);
     stack.pushToVec(tempCircle);
     std::cout << "Now we have in stack:\n";
     stack.coutVec();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "generate 10 elements to stack\n";
     stack.generateToVec(10);
     stack.coutVec();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "pop from stack\n";
     stack.popFromVec();
     stack.coutVec();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "peek of stack\n";
     std::cout << stack.peekOfVec() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "is_empty stack?\n";
     std::cout << stack.isEmptyVec() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "create_empty stack\n";
     stack.createEmptyVec();
     stack.coutVec();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "is_empty stack?\n";
     std::cout << stack.isEmptyVec() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
 }
 
-void demoList(){
-    Stack<Circle> stack;
-    std::cout << "We have created Stack with type Circle(x,y,radius)\n"
-              << "Let's push an element to stack\n";
+void demoList(Stack<Circle> stack){
+    std::cout << "Let's push an element to stack\n";
     Circle tempCircle(1,2,3);
     stack.pushToList(tempCircle);
     std::cout << "Now we have in stack:\n";
     stack.coutList();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "generate 10 elements to stack\n";
     stack.generateToList(10);
     stack.coutList();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "pop from stack\n";
     stack.popFromList();
     stack.coutList();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "peek of stack\n";
     std::cout << stack.peekOfList() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "is_empty stack?\n";
     std::cout << stack.isEmptyList() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "create_empty stack\n";
     stack.createEmptyList();
     stack.coutList();
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
     std::cout << "is_empty stack?\n";
     std::cout << stack.isEmptyList() << std::endl;
-    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "-----------------------------------------\n";
 }
 
 ///-----------------------BENCHMARK--------------------///
-void benchmark(){
 
+void benchmark(){
+    benchmarkArr();
+    benchmarkVec();
+    benchmarkList();
 }
 
+void benchmarkArr(){
+    Stack<Circle> stack;
+    Circle tempToPush(1,2,3);
+
+    std::cout << "STARTING BENCHMARK FOR ARRAY\nTIME:" << std::endl;
+
+    double timePushStart = clock();
+    for(int i = 0; i < 100*MAX_ARR_SIZE; i++) {
+        stack.pushToArr(tempToPush);
+        stack.popFromArr();
+    }
+    double timePushEnd = clock();
+    double timePush = (timePushEnd - timePushStart) / CLOCKS_PER_SEC;
+    std::cout << "push&pop " << 100*MAX_ARR_SIZE << " times = " << timePush << std::endl;
+
+    double timeGeneratingStart = clock();
+    for(int i = 0; i < 100; i++) {
+        stack.generateToArr(MAX_ARR_SIZE);
+        stack.createEmptyArr();
+    }
+    double timeGeneratingEnd = clock();
+    double timeGenerating = (timeGeneratingEnd - timeGeneratingStart) / CLOCKS_PER_SEC;
+    std::cout << "Generating " << MAX_ARR_SIZE  << " elements 100 times and create empty each time = " << timeGenerating << std::endl;
+
+    double timePeekStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.peekOfArr();
+    double timePeekEnd = clock();
+    double timePeek = (timePeekEnd - timePeekStart) / CLOCKS_PER_SEC;
+    std::cout << "peek " << 100*MAX_ARR_SIZE << " = " << timePeek << std::endl;
+
+    double timeIsEmptyStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.isEmptyArr();
+    double timeIsEmptyEnd = clock();
+    double timeIsEmpty = (timeIsEmptyEnd - timeIsEmptyStart) / CLOCKS_PER_SEC;
+    std::cout << "is_empty " << 100*MAX_ARR_SIZE << " times = " << timeIsEmpty << std::endl;
+
+    double timeCreatingEmptyStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.createEmptyArr();
+    double timeCreatingEmptyEnd = clock();
+    double timeCreatingEmpty = (timeCreatingEmptyEnd - timeCreatingEmptyStart) / CLOCKS_PER_SEC;
+    std::cout << "create_empty " << 100*MAX_ARR_SIZE << " times = " << timeCreatingEmpty << std::endl;
+
+    stack.generateToArr(MAX_ARR_SIZE);
+    std::cout << "size of " << MAX_ARR_SIZE << " elements = " << stack.sizeOfArr() << "KB" << std::endl;
+
+    std::cout << "THE END FOR ARRAY" << std::endl << std::endl;
+}
+
+void benchmarkVec(){
+    Stack<Circle> stack;
+    Circle tempToPush(1,2,3);
+
+    std::cout << "STARTING BENCHMARK FOR VECTOR\nTIME:" << std::endl;
+
+    double timePushStart = clock();
+    for(int i = 0; i < 100*MAX_ARR_SIZE; i++) {
+        stack.pushToVec(tempToPush);
+        stack.popFromVec();
+    }
+    double timePushEnd = clock();
+    double timePush = (timePushEnd - timePushStart) / CLOCKS_PER_SEC;
+    std::cout << "push&pop " << 100*MAX_ARR_SIZE << " times = " << timePush << std::endl;
+
+    double timeGeneratingStart = clock();
+    for(int i = 0; i < 100; i++) {
+        stack.generateToVec(MAX_ARR_SIZE);
+        stack.createEmptyVec();
+    }
+    double timeGeneratingEnd = clock();
+    double timeGenerating = (timeGeneratingEnd - timeGeneratingStart) / CLOCKS_PER_SEC;
+    std::cout << "Generating " << MAX_ARR_SIZE  << " elements 100 times and create empty each time = " << timeGenerating << std::endl;
+
+    double timePeekStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.peekOfVec();
+    double timePeekEnd = clock();
+    double timePeek = (timePeekEnd - timePeekStart) / CLOCKS_PER_SEC;
+    std::cout << "peek " << 100*MAX_ARR_SIZE << " = " << timePeek << std::endl;
+
+    double timeIsEmptyStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.isEmptyVec();
+    double timeIsEmptyEnd = clock();
+    double timeIsEmpty = (timeIsEmptyEnd - timeIsEmptyStart) / CLOCKS_PER_SEC;
+    std::cout << "is_empty " << 100*MAX_ARR_SIZE << " times = " << timeIsEmpty << std::endl;
+
+    double timeCreatingEmptyStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.createEmptyVec();
+    double timeCreatingEmptyEnd = clock();
+    double timeCreatingEmpty = (timeCreatingEmptyEnd - timeCreatingEmptyStart) / CLOCKS_PER_SEC;
+    std::cout << "create_empty " << 100*MAX_ARR_SIZE << " times = " << timeCreatingEmpty << std::endl;
+
+    stack.generateToVec(MAX_ARR_SIZE);
+    std::cout << "size of " << MAX_ARR_SIZE << " elements = " << stack.sizeOfVec() << "KB" << std::endl;
+
+    std::cout << "THE END FOR VECTOR" << std::endl << std::endl;
+}
+
+void benchmarkList(){
+    Stack<Circle> stack;
+    Circle tempToPush(1,2,3);
+
+    std::cout << "STARTING BENCHMARK FOR LIST\nTIME:" << std::endl;
+
+    double timePushStart = clock();
+    for(int i = 0; i < 100*MAX_ARR_SIZE; i++) {
+        stack.pushToList(tempToPush);
+        stack.popFromList();
+    }
+    double timePushEnd = clock();
+    double timePush = (timePushEnd - timePushStart) / CLOCKS_PER_SEC;
+    std::cout << "push&pop " << 100*MAX_ARR_SIZE << " times = " << timePush << std::endl;
+
+    double timeGeneratingStart = clock();
+    for(int i = 0; i < 100; i++) {
+        stack.generateToList(MAX_ARR_SIZE);
+        stack.createEmptyList();
+    }
+    double timeGeneratingEnd = clock();
+    double timeGenerating = (timeGeneratingEnd - timeGeneratingStart) / CLOCKS_PER_SEC;
+    std::cout << "Generating " << MAX_ARR_SIZE  << " elements 100 times and create empty each time = " << timeGenerating << std::endl;
+
+    stack.pushToList(tempToPush);
+
+    double timePeekStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.peekOfList();
+    double timePeekEnd = clock();
+    double timePeek = (timePeekEnd - timePeekStart) / CLOCKS_PER_SEC;
+    std::cout << "peek " << 100*MAX_ARR_SIZE << " = " << timePeek << std::endl;
+
+    double timeIsEmptyStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.isEmptyList();
+    double timeIsEmptyEnd = clock();
+    double timeIsEmpty = (timeIsEmptyEnd - timeIsEmptyStart) / CLOCKS_PER_SEC;
+    std::cout << "is_empty " << 100*MAX_ARR_SIZE << " times = " << timeIsEmpty << std::endl;
+
+    double timeCreatingEmptyStart = clock();
+    for (int i = 0; i < 100*MAX_ARR_SIZE; i++)
+        stack.createEmptyList();
+    double timeCreatingEmptyEnd = clock();
+    double timeCreatingEmpty = (timeCreatingEmptyEnd - timeCreatingEmptyStart) / CLOCKS_PER_SEC;
+    std::cout << "create_empty " << 100*MAX_ARR_SIZE << " times = " << timeCreatingEmpty << std::endl;
+
+    stack.generateToList(MAX_ARR_SIZE);
+    std::cout << "size of " << MAX_ARR_SIZE << " elements = " << stack.sizeOfList() << "KB" << std::endl;
+
+    std::cout << "THE END FOR LIST" << std::endl << std::endl;
+}
+
+///----------------------OTHER-------------------------///
 Circle inputCircle(){
     double x, y, radius;
     std::cout << "Enter x and y of the center of circle and radius\n";

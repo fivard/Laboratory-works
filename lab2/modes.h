@@ -6,25 +6,30 @@
 #define LAB2_MODES_H
 
 #include "source.h"
+#include <ctime>
 
 void interactive();
 
-void chooseStructure(int action);
+bool chooseStructure(int action);
 
 void workWithArray();
-void chooseArrayAction(int action, Stack<Circle>& stack);
+bool chooseArrayAction(int action, Stack<Circle>& stack);
 void workWithVector();
-void chooseVectorAction(int action, Stack<Circle>& stack);
+bool chooseVectorAction(int action, Stack<Circle>& stack);
 void workWithList();
-void chooseListAction(int action, Stack<Circle>& stack);
+bool chooseListAction(int action, Stack<Circle>& stack);
 
 void demonstration();
 
-void demoArr();
-void demoVec();
-void demoList();
+void demoArr(Stack<Circle> stack);
+void demoVec(Stack<Circle> stack);
+void demoList(Stack<Circle> stack);
 
 void benchmark();
+
+void benchmarkArr();
+void benchmarkVec();
+void benchmarkList();
 
 
 Circle inputCircle();
