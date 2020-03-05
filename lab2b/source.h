@@ -6,19 +6,56 @@
 #define LAB2B_SOURCE_H
 
 #include <cstdio>
+#include <cmath>
+#include <iostream>
 
-template <class T>
-class hashedArrayTree{
+class HashedArrayTree{
 private:
-    T **top;
-    size_t size
+    int **top;
+    size_t size;
+    size_t power;
+
+    void doubleArr() {
+        int **newTop = new int* [2<<power];
+
+        for (size_t i = 0; i < (2<<(power-2)); i++){
+            newTop[i] = new int [2<<power];
+        }
+
+        for (size_t i = 0; i < (2<<(power-1)); i++)
+            for (size_t j = 0; j < (2<<(power-1)); j++)
+                newTop[i/2][j+i%2*(2<<(power-1))] = top[i][j];
+
+        power++;
+        top = newTop;
+    }
+
+    void halveArr(){
+        power--;
+        size_t newTopSize = 2<<(power-1);
+        int **newTop = new int* [newTopSize];
+
+        for (size_t i = 0; i < (newTopSize<<1); i++){
+            newTop[i] = new int [newTopSize];
+        }
+
+        for (size_t i = 0; i < (newTopSize>>1); i++)
+            for (size_t j = 0; j < newTopSize; j++) {
+                newTop[i][j] = top[i / 2][j + i % 2 * newTopSize];
+            }
+
+        top = newTop;
+    }
 
 public:
-    hashedArrayTree(){
-        **top = new T[1];
-        *top[0] = new T[1];
-        size = 0;
-    }
+    HashedArrayTree();
+    ~HashedArrayTree();
+
+    void push_back(int value);
+
+    void pop_back();
+
+    void coutTree();
 
 };
 
