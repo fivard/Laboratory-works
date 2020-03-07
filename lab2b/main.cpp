@@ -1,31 +1,14 @@
 #include <iostream>
 #include "source.h"
+#include "modes.h"
 
 using namespace std;
 
 int main()
 {
     bool isContinued = true;
-    HashedArrayTree tree;
-    for (int i = 0; i < 16; i++)
-        tree.push_back(i);
 
-    tree.coutTree();
-
-    tree.push_back(16);
-
-    tree.coutTree();
-
-    for (int i = 0; i < 9; i++)
-        tree.pop_back();
-
-    tree.coutTree();
-
-    tree.push_back(8);
-
-    tree.coutTree();
-
-    /*while(isContinued){
+    while(isContinued){
         cout << "Choose mode\n"
              << "1 - Interactive\n"
              << "2 - Demonstration\n"
@@ -34,6 +17,7 @@ int main()
         cin >> action;
         switch (action){
             case 1:
+                interactive();
                 break;
             case 2:
                 break;
@@ -41,7 +25,7 @@ int main()
                 break;
             default: cout << "Choose correct number\n";
         }
-    }*/
+    }
     return 0;
 }
 
