@@ -21,6 +21,7 @@ int main()
                 interactive();
                 break;
             case 2:
+                demonstration();
                 break;
             case 3: check = false;
                 break;

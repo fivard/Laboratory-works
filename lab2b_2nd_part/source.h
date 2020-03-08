@@ -41,7 +41,10 @@ class MessageLog{
 
 public:
     explicit MessageLog(int size);
+
     void addNewMessage(string message);
+    void generateSomeMessages(size_t count);
+
     void outputMessageLog();
     void outputSomeLastElements(size_t count);
 };

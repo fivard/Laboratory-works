@@ -16,8 +16,9 @@ void interactive(){
     while (continued) {
         cout << "\nChoose your action\n"
              << "1 - create new message and add to message log\n"
-             << "2 - output message log\n"
-             << "3 - output some last messages in message log\n"
+             << "2 - generate some random messages to message log\n"
+             << "3 - output message log\n"
+             << "4 - output some last messages in message log\n"
              << "100 - exit\n";
         short action;
         cin >> action;
@@ -29,13 +30,19 @@ void interactive(){
                 log.addNewMessage(newMessage);
                 break;
             case 2:
-                log.outputMessageLog();
+                int countOfRandomMessages;
+                cout << "Enter count of messages\n";
+                cin >> countOfRandomMessages;
+                log.generateSomeMessages(countOfRandomMessages);
                 break;
             case 3:
-                size_t count;
+                log.outputMessageLog();
+                break;
+            case 4:
+                size_t countOfOutputMessages;
                 cout << "Enter count of last messages\n";
-                cin >> count;
-                log.outputSomeLastElements(count);
+                cin >> countOfOutputMessages;
+                log.outputSomeLastElements(countOfOutputMessages);
                 break;
             case 100:
                 continued = false;
@@ -45,4 +52,26 @@ void interactive(){
                 break;
         }
     }
+}
+
+void demonstration(){
+    cout << "Creating message log with max size 10\n\n";
+    MessageLog log(10);
+
+    cout << "Adding new message \"1st message\"\n\n";
+    log.addNewMessage("1st message");
+
+    cout << "Output log\n\n";
+    log.outputMessageLog();
+
+    cout << "Generate 10 random messages to message log."
+    << " First message will be deleted since it is the latest message\n\n";
+    log.generateSomeMessages(10);
+
+    cout << "Output log\n\n";
+    log.outputMessageLog();
+
+    cout << "Output last 5 message\n\n";
+    log.outputSomeLastElements(5);
+
 }

@@ -84,6 +84,18 @@ void MessageLog::addNewMessage(std::string message) {
     log.push_back(mess);
 }
 
+void MessageLog::generateSomeMessages(size_t count) {
+
+    srand(time(nullptr));
+    for (size_t i = 0; i < count; i++){
+        string randomText;
+        int length = rand()%20;
+        for (int j = 0; j < length; j++)
+            randomText.push_back(char(rand()%25+97));
+        addNewMessage(randomText);
+    }
+}
+
 void MessageLog::outputMessageLog() {
     cout << "Message log:\n";
     for (size_t i = 0; i < log.size(); i++) {
