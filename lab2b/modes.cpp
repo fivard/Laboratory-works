@@ -90,3 +90,46 @@ void interactive(){
         }
     }
 }
+
+void demonstration(){
+    HashedArrayTree tree;
+    cout << "We have created new hashed array tree\n";
+    cout << "Push back new element 1003\n\n";
+    tree.push_back(1003);
+    tree.outputTree();
+
+    cout << "Generate 16 elements to the end. Tree will double his size\n\n";
+
+    tree.generateSomeElementsToTheEnd(16);
+    tree.outputTree();
+
+    cout << "Pop back 9 elements. Tree will halve\n\n";
+
+    for (int i = 0; i < 9; i++)
+        tree.pop_back();
+    tree.outputTree();
+
+    cout << "Insert 450 by index 5\n\n";
+
+    tree.insertByIndex(450, 5);
+    tree.outputTree();
+
+    cout << "Searching by index 5\n\n";
+
+    cout << "An element which has index 5 is " << tree.searchByIndex(5) << "\n\n";
+
+    cout << "Delete 450 by value(searching by value and deleting by index)\n\n";
+    tree.deleteByIndex(tree.searchByValue(450));
+    tree.outputTree();
+
+    cout << "Clear tree\n\n";
+
+    tree.clear();
+
+    cout << "Check empty\n\n";
+
+    cout << tree.empty() << '\n';
+
+    cout << "The end of demo\n";
+
+}

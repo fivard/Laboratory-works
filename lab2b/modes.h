@@ -11,4 +11,6 @@ using namespace std;
 
 void interactive();
 
+void demonstration();
+
 #endif //LAB2B_MODES_H

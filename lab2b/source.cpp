@@ -20,6 +20,10 @@ HashedArrayTree::~HashedArrayTree(){
     delete [] top;
 }
 
+int HashedArrayTree::sizeOfTree() {
+    return size;
+}
+
 void HashedArrayTree::outputTree() {
     for (size_t i = 0; i < (2<<(power-1)); i++) {
         std::cout << "array " << i << ": ";

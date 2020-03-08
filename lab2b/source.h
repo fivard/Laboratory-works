@@ -58,6 +58,7 @@ private:
 public:
     HashedArrayTree();
     ~HashedArrayTree();
+    int sizeOfTree();
 
     void push_back(int value);
 
