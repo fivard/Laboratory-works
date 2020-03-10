@@ -3,7 +3,7 @@
 //
 
 #include "source.h"
-void MessageLog::Message::Time::outputTime() {
+void MessageLog::Message::Time::outputTime() const {
     if (hour < 10)
         cout << "0";
     cout << hour;
@@ -30,7 +30,11 @@ void MessageLog::Message::Time::outputTime() {
     cout << month;
     cout << '.';
 
-    cout << year << endl;
+    cout << year;
+}
+
+MessageLog::Message::Message() {
+    text = "";
 }
 
 MessageLog::Message::Message(string text) {
@@ -69,19 +73,12 @@ void MessageLog::Message::setTime() {
     timeCreated.year = (t_tim[20]-'0')*1000+(t_tim[21]-'0')*100+(t_tim[22]-'0')*10+t_tim[23]-'0';
 }
 
-void MessageLog::Message::output() {
-    cout << "\t\ttext: ";
-    cout << text << "\n";
-    cout << "\t\ttime: ";
-    timeCreated.outputTime();
-}
-
 void MessageLog::addNewMessage(std::string message) {
     Message mess(message);
 
-    if (log.size() == maxSize)
-        log.erase(log.begin());
-    log.push_back(mess);
+    if (log.getLength() == maxSize)
+        log.pop_head();
+    log.push(mess);
 }
 
 void MessageLog::generateSomeMessages(size_t count) {
@@ -97,24 +94,9 @@ void MessageLog::generateSomeMessages(size_t count) {
 }
 
 void MessageLog::outputMessageLog() {
-    cout << "Message log:\n";
-    for (size_t i = 0; i < log.size(); i++) {
-        cout << '\t' << "message " << i+1 << ":\n";
-        log[i].output();
-    }
-    cout << endl;
+    log.printList();
 }
 
 void MessageLog::outputSomeLastElements(size_t count) {
-    if (count >= log.size()) {
-        outputMessageLog();
-        return;
-    }
-
-    cout << "Last " << count << " elements:\n";
-    for (size_t i = log.size()-count; i < log.size(); i++) {
-        cout << '\t' << "message " << i+1 << ":\n";
-        log[i].output();
-    }
-    cout << endl;
+    log.printSomeLastElements(count);
 }
