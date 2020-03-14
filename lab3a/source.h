@@ -5,14 +5,37 @@
 #ifndef LAB3A_SOURCE_H
 #define LAB3A_SOURCE_H
 
-class Point{
-private:
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
+
+using namespace std;
+
+class Point {
+
     double x, y, z;
 public:
     Point();
     Point(double newX, double newY, double newZ);
 
-    int comparePointWith(Point another);
+    double getX();
+    double getY();
+    double getZ();
+    int moreThan(Point another);
+};
+
+class ArrayOfPoints{
+private:
+    Point *arr;
+    int size;
+public:
+    explicit ArrayOfPoints(int size);
+
+    void generateArray();
+    void output();
+
+    void insertionSort();
+
 };
 
 #endif //LAB3A_SOURCE_H
