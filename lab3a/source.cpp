@@ -50,9 +50,9 @@ ArrayOfPoints::ArrayOfPoints(int size){
 void ArrayOfPoints::generateArray() {
     srand(time(nullptr));
     for (int i = 0; i < size; i++){
-        double x = (double)rand()/RAND_MAX + rand();
-        double y = (double)rand()/RAND_MAX + rand();
-        double z = (double)rand()/RAND_MAX + rand();
+        double x = (double)rand()/RAND_MAX + rand()%100;
+        double y = (double)rand()/RAND_MAX + rand()%100;
+        double z = (double)rand()/RAND_MAX + rand()%100;
         Point tempPoint(x,y,z);
         arr[i] =tempPoint;
     }
@@ -74,4 +74,25 @@ void ArrayOfPoints::insertionSort(){
         }
         arr[j+1] = tempValue;
     }
+}
+void ArrayOfPoints::quickSort(int left, int right) {
+    if (left >= right)
+        return;
+    int delimiter = partition(left, right);
+    quickSort(left, delimiter-1);
+    quickSort(delimiter, right);
+}
+int ArrayOfPoints::partition(int left, int right) {
+    Point pivot = arr[left];
+    int i = left;
+    int j = right;
+    while (i <= j){
+        while (pivot.moreThan(arr[i]) == 1)
+            i++;
+        while (arr[j].moreThan(pivot) == 1)
+            j--;
+        if (i <= j)
+            swap(arr[i++], arr[j--]);
+    }
+    return i;
 }

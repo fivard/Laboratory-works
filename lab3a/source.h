@@ -35,6 +35,8 @@ public:
     void output();
 
     void insertionSort();
+    void quickSort(int left, int right); //Hoare partition scheme, leftmost pivot
+    int partition(int left, int right);
 
 };
 
