@@ -1,12 +1,30 @@
-#include "source.h"
+#include "modes.h"
 
 int main() {
-    ArrayOfPoints newPoints(10);
-    newPoints.generateArray();
-    newPoints.output();
-    //newPoints.insertionSort();
-    newPoints.quickSort(0, 9);
-    cout << "SORT\n";
-    newPoints.output();
+    bool check = true;
+
+    while(check){
+        cout << "Choose mode\n"
+             << "1 - Demonstration\n"
+             << "2 - Benchmark\n"
+             << "3 - exit\n";
+
+        short action;
+        cin >> action;
+
+        switch (action){
+            case 1:
+                demonstration();
+                break;
+            case 2:
+                benchmark();
+                break;
+            case 3:
+                check = false;
+                break;
+            default: cout << "Choose correct number\n";
+        }
+    }
+
     return 0;
 }
