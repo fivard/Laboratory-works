@@ -58,17 +58,37 @@ void ArrayOfPoints::generateArray() {
         arr[i] =tempPoint;
     }
 }
-void ArrayOfPoints::setStaticValue(int value) {
-    Point a(value, value, value);
+void ArrayOfPoints::copyTo(ArrayOfPoints newArray) {
     for (int i = 0; i < size; i++)
-        arr[i] = a;
+        newArray.arr[i] = this->arr[i];
 }
-void ArrayOfPoints::output() {
+void ArrayOfPoints::setAlreadySortedArray() {
     for (int i = 0; i < size; i++)
-        cout << i << ". " << arr[i].getX() << ' ' << arr[i].getY() << ' ' << arr[i].getZ() << '\n';
+        if ((i+1)%5 == 0) {
+            Point point(i-5, i-5, i-5);
+            arr[i] = point;
+        }else{
+            Point point(i, i, i);
+            arr[i] = point;
+        }
+}
+void ArrayOfPoints::setAlreadySortedReversedArray() {
+    for (int i = 0; i < size; i++)
+        if ((i+1)%5 == 0) {
+            Point point(size-i+5, size-i+5, size-i+5);
+            arr[i] = point;
+        }else{
+            Point point(size-i, size-i, size-i);
+            arr[i] = point;
+        }
+}
+void ArrayOfPoints::output(int left, int right) {
+    for (int i = left; i <= right; i++)
+        cout << i+1 << ". " << arr[i].getX() << ' ' << arr[i].getY() << ' ' << arr[i].getZ() << '\n';
 }
 
 void ArrayOfPoints::insertionSort(int left, int right){
+    cout << "INSERTION SORT\n";
     Point tempValue;
     for (int i = left+1; i < right+1; i++){
         tempValue = arr[i];
@@ -78,16 +98,26 @@ void ArrayOfPoints::insertionSort(int left, int right){
             j--;
         }
         arr[j+1] = tempValue;
+        cout << "STEP " << i << endl;
+        output(left, i);
+        cout << endl;
+        output(i+1, right);
+        cout << endl;
     }
 }
 void ArrayOfPoints::quickSort(int left, int right) {
-    if (left >= right)
+    if (left >= right) {
+        cout << left << " and " << right << " is equal. Go next\n";
         return;
+    }
     int delimiter = partition(left, right);
     quickSort(left, delimiter-1);
     quickSort(delimiter, right);
 }
 int ArrayOfPoints::partition(int left, int right) {
+    cout << "partition " << left+1 << " and " << right+1 << endl;
+    cout << "before:\n";
+    output(left, right);
     Point pivot = arr[left];
     int i = left;
     int j = right;
@@ -99,6 +129,9 @@ int ArrayOfPoints::partition(int left, int right) {
         if (i <= j)
             swap(arr[i++], arr[j--]);
     }
+    cout << "\nafter:\n";
+    output(left, right);
+    cout << "delimiter = " << i+1 << endl << endl;
     return i;
 }
 void ArrayOfPoints::mergeSort(int left, int right) {
@@ -113,6 +146,12 @@ void ArrayOfPoints::mergeSort(int left, int right) {
     }
 }
 void ArrayOfPoints::merge(int left, int middle, int right) {
+    cout << "\nmerge " << left+1 << "-" << middle+1
+        << " and " << middle+2 << "-" << right+1 << endl;
+    output(left, middle);
+    cout << endl;
+    output(middle+1, right);
+
     int i, j, k;
     int size1 = middle - left + 1;
     int size2 = right - middle;
@@ -138,6 +177,9 @@ void ArrayOfPoints::merge(int left, int middle, int right) {
 
     while (j < size2)
         arr[k++] = R[j++];
+
+    cout << "merged:\n";
+    output(left, right);
 }
 void ArrayOfPoints::comboSort(int left, int right, const int& threshold) {
     if (left < right)
@@ -147,9 +189,12 @@ void ArrayOfPoints::comboSort(int left, int right, const int& threshold) {
         }
         else {
             int middle = (left + right) / 2;
+            cout << "splited up " << left+1 << "-" << middle+1
+            << " and " << middle+2 << "-" << right+1 << endl;
 
             comboSort(left, middle, threshold);
             comboSort(middle + 1, right, threshold);
+
             merge(left, middle, right);
         }
     }

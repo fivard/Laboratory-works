@@ -28,19 +28,23 @@ class ArrayOfPoints{
 private:
     Point *arr;
     int size;
+    int partition(int left, int right);
+    void merge(int left, int middle, int right);
+
 public:
     explicit ArrayOfPoints(int size);
 
     void generateArray();
-    void setStaticValue(int value);
-    void output();
+    void copyTo(ArrayOfPoints newArray);
+    void setAlreadySortedArray();
+    void setAlreadySortedReversedArray();
+    void output(int left, int right);
 
     void insertionSort(int left, int right);
     void quickSort(int left, int right); //Hoare's partition scheme, leftmost pivot
-    int partition(int left, int right);
     void mergeSort(int left, int right); //Top down, two arrays
-    void merge(int left, int middle, int right);
-    void comboSort(int left, int right, const int& threshold); //Based on merge sort
+    void comboSort(int left, int right, const int& threshold);  //Based on mergeSort
+                                                                //and insertionSort
 };
 
 #endif //LAB3A_SOURCE_H
