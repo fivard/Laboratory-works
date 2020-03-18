@@ -31,6 +31,9 @@ private:
     int partition(int left, int right);
     void merge(int left, int middle, int right);
 
+    int benchmarkPartition(int left, int right);
+    void benchmarkMerge(int left, int middle, int right);
+
 public:
     explicit ArrayOfPoints(int size);
 
@@ -45,6 +48,11 @@ public:
     void mergeSort(int left, int right); //Top down, two arrays
     void comboSort(int left, int right, const int& threshold);  //Based on mergeSort
                                                                 //and insertionSort
+    //without any output
+    void benchmarkInsertionSort(int left, int right);
+    void benchmarkQuickSort(int left, int right);
+    void benchmarkMergeSort(int left, int right);
+    void benchmarkComboSort(int left, int right, const int& threshold);
 };
 
 #endif //LAB3A_SOURCE_H

@@ -199,3 +199,95 @@ void ArrayOfPoints::comboSort(int left, int right, const int& threshold) {
         }
     }
 }
+
+void ArrayOfPoints::benchmarkInsertionSort(int left, int right){
+    Point tempValue;
+    for (int i = left+1; i < right+1; i++){
+        tempValue = arr[i];
+        int j = i-1;
+        while (tempValue.moreThan(arr[j]) == -1 && j >= left){
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = tempValue;
+    }
+}
+void ArrayOfPoints::benchmarkQuickSort(int left, int right) {
+    if (left >= right)
+        return;
+    int delimiter = benchmarkPartition(left, right);
+    benchmarkQuickSort(left, delimiter-1);
+    benchmarkQuickSort(delimiter, right);
+}
+int ArrayOfPoints::benchmarkPartition(int left, int right) {
+    Point pivot = arr[left];
+    int i = left;
+    int j = right;
+    while (i <= j){
+        while (pivot.moreThan(arr[i]) == 1 && i <= right)
+            i++;
+        while (arr[j].moreThan(pivot) == 1 && j >= left)
+            j--;
+        if (i <= j)
+            swap(arr[i++], arr[j--]);
+    }
+    return i;
+}
+void ArrayOfPoints::benchmarkMergeSort(int left, int right) {
+    if (left < right)
+    {
+        int middle = (left+right)/2;
+
+        benchmarkMergeSort(left, middle);
+        benchmarkMergeSort(middle+1, right);
+
+        benchmarkMerge(left, middle, right);
+    }
+}
+void ArrayOfPoints::benchmarkMerge(int left, int middle, int right) {
+    int i, j, k;
+    int size1 = middle - left + 1;
+    int size2 = right - middle;
+
+    Point *L = new Point[size1];
+    Point *R = new Point[size2];
+
+    for (i = 0; i < size1; i++)
+        L[i] = arr[left + i];
+    for (j = 0; j < size2; j++)
+        R[j] = arr[middle + 1+ j];
+
+    i = j = 0;
+    k = left;
+    while (i < size1 && j < size2){
+        if (L[i].moreThan(R[j]) <= 0)
+            arr[k] = L[i++];
+        else
+            arr[k] = R[j++];
+        k++;
+    }
+    while (i < size1)
+        arr[k++] = L[i++];
+
+    while (j < size2)
+        arr[k++] = R[j++];
+
+    delete [] L;
+    delete [] R;
+}
+void ArrayOfPoints::benchmarkComboSort(int left, int right, const int& threshold) {
+    if (left < right)
+    {
+        if (right-left <= threshold){
+            benchmarkInsertionSort(left, right);
+        }
+        else {
+            int middle = (left + right) / 2;
+
+            benchmarkComboSort(left, middle, threshold);
+            benchmarkComboSort(middle + 1, right, threshold);
+
+            benchmarkMerge(left, middle, right);
+        }
+    }
+}
