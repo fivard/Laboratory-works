@@ -2,6 +2,7 @@
 // Created by Admin on 13.03.2020.
 //
 
+#include <algorithm>
 #include "source.h"
 
 Point::Point() {
@@ -24,7 +25,7 @@ double Point::getY() {
 double Point::getZ() {
     return z;
 }
-int Point::moreThan(Point another) {
+int Point::moreThan(const Point& another) {
     if (this->x > another.x)
         return 1;
     else if (this->x < another.x)
@@ -87,6 +88,9 @@ void ArrayOfPoints::output(int left, int right) {
         cout << i+1 << ". " << arr[i].getX() << ' ' << arr[i].getY() << ' ' << arr[i].getZ() << '\n';
 }
 
+void ArrayOfPoints::systemSort() {
+    sort(arr, arr+size);
+}
 void ArrayOfPoints::insertionSort(int left, int right){
     cout << "INSERTION SORT\n";
     Point tempValue;

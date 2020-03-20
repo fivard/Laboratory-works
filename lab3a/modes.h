@@ -16,6 +16,7 @@ void alreadySortedArray(ArrayOfPoints workingArray, int size, const int& thresho
 void alreadySortedReversedArray(ArrayOfPoints workingArray, int size, const int& threshold);
 void betterThreshold();
 
+double timeSystemSort(ArrayOfPoints arr);
 double timeInsertionSort(ArrayOfPoints arr, int size);
 double timeMergeSort(ArrayOfPoints arr, int size);
 double timeQuickSort(ArrayOfPoints arr, int size);

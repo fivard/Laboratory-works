@@ -21,7 +21,11 @@ public:
     double getX();
     double getY();
     double getZ();
-    int moreThan(Point another);
+    int moreThan(const Point& another);
+
+    friend bool operator<(Point& first, Point& second){
+        return first.moreThan(second) == -1;
+    }
 };
 
 class ArrayOfPoints{
@@ -43,6 +47,7 @@ public:
     void setAlreadySortedReversedArray();
     void output(int left, int right);
 
+    void systemSort();
     void insertionSort(int left, int right);
     void quickSort(int left, int right); //Hoare's partition scheme, leftmost pivot
     void mergeSort(int left, int right); //Top down, two arrays

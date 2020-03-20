@@ -43,6 +43,12 @@ void demonstration(){
     workingArray.output(0, size-1);
     buffer.copyTo(workingArray);
     cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+
+    cout << "\nSorted by systemSort\n";
+    workingArray.systemSort();
+    cout << "Sorted:\n";
+    workingArray.output(0, size-1);
+    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 }
 
 void benchmark(){
@@ -77,6 +83,9 @@ void randomArray(ArrayOfPoints workingArray, int size, const int& threshold){
     cout << "QuickSort: " << timeQuickSort(workingArray, size) << endl;
     buffer.copyTo(workingArray);
 
+    cout << "SystemSort: " << timeSystemSort(workingArray) << endl;
+    buffer.copyTo(workingArray);
+
     cout << "ComboSort(threshold = " << threshold << "): " <<  timeComboSort(workingArray, size, 150) << endl;
     buffer.copyTo(workingArray);
 }
@@ -94,6 +103,9 @@ void alreadySortedArray(ArrayOfPoints workingArray, int size, const int& thresho
     cout << "QuickSort: " << timeQuickSort(workingArray, size) << endl;
     buffer.copyTo(workingArray);
 
+    cout << "SystemSort: " << timeSystemSort(workingArray) << endl;
+    buffer.copyTo(workingArray);
+
     cout << "ComboSort(threshold = " << threshold << "): " <<  timeComboSort(workingArray, size, 150) << endl;
     buffer.copyTo(workingArray);
 }
@@ -109,6 +121,9 @@ void alreadySortedReversedArray(ArrayOfPoints workingArray, int size, const int&
     buffer.copyTo(workingArray);
 
     cout << "QuickSort: " << timeQuickSort(workingArray, size) << endl;
+    buffer.copyTo(workingArray);
+
+    cout << "SystemSort: " << timeSystemSort(workingArray) << endl;
     buffer.copyTo(workingArray);
 
     cout << "ComboSort(threshold = " << threshold << "): " << timeComboSort(workingArray, size, 150) << endl;
@@ -178,6 +193,13 @@ void betterThreshold(){
     cout << "THRESHOLD = " << threshold << endl;
 }
 
+double timeSystemSort(ArrayOfPoints arr){
+    double startSystemSort = clock();
+    arr.systemSort();
+    double endSystemSort = clock();
+    double timeSystemSort = (endSystemSort - startSystemSort) / CLOCKS_PER_SEC;
+    return timeSystemSort;
+}
 double timeInsertionSort(ArrayOfPoints arr, int size){
     double startInsertionSort = clock();
     arr.benchmarkInsertionSort(0, size-1);
