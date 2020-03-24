@@ -154,6 +154,9 @@ void interactive(){
                 comparisonFields = functions.setComparisonFields();
                 functions.comboSort(0, functions.log.size()-1, 50, comparisonFields);
                 break;
+            case 17:
+                functions.countingSort();
+                break;
             case 100:
                 flag = false;
                 break;

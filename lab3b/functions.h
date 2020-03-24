@@ -55,6 +55,7 @@ public:
     void insertionSort(int left, int right, const vector<string>& comparisonFields);
     void comboSort(int left, int right, const int& threshold, vector<string>& comparisonFields);
     void merge(int left, int middle, int right, const vector<string>& comparisonFields);
+    void countingSort();
     //Допоміжні
     int countWords(string);
     void generateMessages(int);

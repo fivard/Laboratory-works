@@ -471,6 +471,31 @@ void Functions::merge(int left, int middle, int right, const vector<string>& com
     while (j < size2)
         log[k++] = R[j++];
 }
+void Functions::countingSort() {
+    map<string, int> count;
+    
+    for (auto i : log){
+        count[i.typeOfError]++;
+    }
+    for (auto i = ++count.begin(); i != count.end(); i++){
+        auto previous = --i;
+        i++;
+        i->second += previous->second;
+    }
+
+    Message* tempLog = new Message [log.size()];
+
+    for (int i = log.size()-1; i >= 0; i--){
+        int newIndex = count[log[i].typeOfError];
+        tempLog[newIndex-1] = log[i];
+        count[log[i].typeOfError]--;
+    }
+
+    for (int i = 0; i < log.size(); i++)
+        log[i] = tempLog[i];
+
+    delete [] tempLog;
+}
 //Вспомогательные
 int Functions::countWords(string s) {
     if (s.size() == 0)
@@ -534,7 +559,6 @@ void Functions::generateMessages(int n) {
     }
     saveToFile();
 }
-
 bool Functions::subString(string main, string substring){
     for (int i = 0; i < substring.size(); i++)
         if (main[i] != substring[i])
