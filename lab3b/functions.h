@@ -16,7 +16,7 @@ struct benchData{
 
 };
 
-class Functions{
+class MessageLog{
 public:
     vector<Message> log;
     string arrOfErrors[5] = {
@@ -55,13 +55,15 @@ public:
     void insertionSort(int left, int right, const vector<string>& comparisonFields);
     void comboSort(int left, int right, const int& threshold, vector<string>& comparisonFields);
     void merge(int left, int middle, int right, const vector<string>& comparisonFields);
-    void countingSort();
+    void countingSortByTypeOfError();
+    void radixSortByPriority();
+    void countingSortForRadixSort(int exp);
     //Допоміжні
     int countWords(string);
     void generateMessages(int);
     static bool subString(string, string);
     void clearFiles();
-    benchData forBenchmark(int);//generate N message, save to files,
+    void copyTo(MessageLog buffer);
     //reading from files and searching random element
 };
 #endif //LAB3B_FUNCTIONS_H

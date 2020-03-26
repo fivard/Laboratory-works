@@ -11,9 +11,9 @@ using namespace std;
 
 void Message::coutElem() {
     cout << this->id << '\t' << this->text
-    << '\t' << this->timeCreated.hour << ':' << this->timeCreated.minutes << ':' << this->timeCreated.sec
+    << "\t\t" << this->timeCreated.hour << ':' << this->timeCreated.minutes << ':' << this->timeCreated.sec
     << ' ' << this->timeCreated.day << '.' << this->timeCreated.month << '.' << this->timeCreated.year
-    << '\t' << this->typeOfError << '\t' << this->priority << '\t' << this->loading << ' ' << '\n' ;
+    << '\t' << this->typeOfError << "\t\t" << this->priority << "\t\t" << this->loading << ' ' << '\n' ;
 }
 
 int FullTime::moreThen(FullTime secondTime) {

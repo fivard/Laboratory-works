@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void Functions::defineId() {
+void MessageLog::defineId() {
     ifstream file("data.txt");
     Message mess;
     bool flag = true;
@@ -29,18 +29,19 @@ void Functions::defineId() {
     file.close();
 }
 //Вывод
-void Functions::coutFromVector() {
+void MessageLog::coutFromVector() {
+    cout << "id\ttext\t\ttimeCreated\t\ttypeOfError\tpriority\tloading\n";
     for (auto i : log)
         i.coutElem();
 }
-void Functions::coutFromTxt(){
+void MessageLog::coutFromTxt(){
     ifstream file("data.txt");
     string s;
     while(getline(file, s))
         cout << s << endl;
     file.close();
 }
-void Functions::coutFromBin() {
+void MessageLog::coutFromBin() {
     ifstream file("binary.txt", ios_base::binary);
     Message mess;
     file.seekg(0, ios::end);
@@ -82,7 +83,7 @@ void Functions::coutFromBin() {
     file.close();
 }
 //Чтение
-void Functions::readingFromTxt() {
+void MessageLog::readingFromTxt() {
     ifstream file("data.txt");
     Message mess;
     while(file >> mess.id >> mess.countWords){
@@ -104,7 +105,7 @@ void Functions::readingFromTxt() {
     }
     file.close();
 }
-void Functions::readingFromBin(){
+void MessageLog::readingFromBin(){
     ifstream file("binary.txt", ios_base::binary);
     Message mess;
     file.seekg(0, ios::end);
@@ -148,9 +149,9 @@ void Functions::readingFromBin(){
     file.close();
 };
 //Создание
-void Functions::createNewElemAndAddToVector(string message) {
+void MessageLog::createNewElemAndAddToVector(string message) {
     Message mess;
-    Functions function;
+    MessageLog function;
 
     mess.id = Message::count++;
 
@@ -187,10 +188,10 @@ void Functions::createNewElemAndAddToVector(string message) {
 
     mess.savedInFiles = false;
 
-    Functions::log.push_back(mess);
+    MessageLog::log.push_back(mess);
 }
 //Сохранение
-void Functions::saveToFile() {
+void MessageLog::saveToFile() {
     ofstream file("data.txt", ios_base::app);
     ofstream bin("binary.txt", ios_base::binary|ios_base::app);
     if (!file){
@@ -238,8 +239,8 @@ void Functions::saveToFile() {
     bin.close();
 }
 //Поиск по критериям
-void Functions::searchingBetweenTime(FullTime timeBefore, FullTime timeAfter) {
-    Functions funct;
+void MessageLog::searchingBetweenTime(FullTime timeBefore, FullTime timeAfter) {
+    MessageLog funct;
     funct.readingFromTxt();
     for (auto i : funct.log){
         if (i.timeCreated.moreThen(timeBefore) && timeAfter.moreThen(i.timeCreated)) {
@@ -253,31 +254,31 @@ void Functions::searchingBetweenTime(FullTime timeBefore, FullTime timeAfter) {
         }
     }
 }
-void Functions::searchingTypeAndLoading(string neededType, double neededLoading) {
-    Functions funct;
+void MessageLog::searchingTypeAndLoading(string neededType, double neededLoading) {
+    MessageLog funct;
     funct.readingFromTxt();
     for (auto i : funct.log){
         if (i.typeOfError == neededType && i.loading >= neededLoading)
             i.coutElem();
     }
 }
-void Functions::searchingSubString(string subStr) {
-    Functions funct;
+void MessageLog::searchingSubString(string subStr) {
+    MessageLog funct;
     funct.readingFromTxt();
     for (auto i : funct.log){
         if (subString(i.text, subStr))
             i.coutElem();
     }
 }
-void Functions::benchSearchingWithSubstr(string subStr) {
+void MessageLog::benchSearchingWithSubstr(string subStr) {
     for (auto i : log){
         if (subString(i.text, subStr))
             cout << "Element has found: " << endl, i.coutElem();
     }
 }
 //Удаление
-void Functions::deleteOneMessage(int id) {
-    Functions func;
+void MessageLog::deleteOneMessage(int id) {
+    MessageLog func;
     func.readingFromTxt();
     for (int i = 0; i < func.log.size(); i++)
         if (func.log[i].id == id) {
@@ -292,8 +293,8 @@ void Functions::deleteOneMessage(int id) {
     defineId();
 }
 //Обновление
-void Functions::updateOneMessage(int id, string newMessage) {
-    Functions func;
+void MessageLog::updateOneMessage(int id, string newMessage) {
+    MessageLog func;
     func.readingFromTxt();
     for (auto & i : func.log)
         if (i.id == id) {
@@ -352,7 +353,7 @@ void Functions::updateOneMessage(int id, string newMessage) {
     defineId();
 }
 //Сортировки
-vector<string> Functions::setComparisonFields() {
+vector<string> MessageLog::setComparisonFields() {
     vector<string> comparisonFields;
 
     bool continued = true;
@@ -394,7 +395,7 @@ vector<string> Functions::setComparisonFields() {
     cout << endl;
     return comparisonFields;
 }
-void Functions::outputUnusedFields(const vector<string>& comparisonFields) {
+void MessageLog::outputUnusedFields(const vector<string>& comparisonFields) {
     vector<string> temp{"id", "text", "timeCreated", "typeOfError", "priority", "loading"};
     int number = 1;
     if (comparisonFields.empty())
@@ -416,7 +417,7 @@ void Functions::outputUnusedFields(const vector<string>& comparisonFields) {
         number++;
     }
 }
-void Functions::insertionSort(int left, int right, const vector<string> &comparisonFields) {
+void MessageLog::insertionSort(int left, int right, const vector<string> &comparisonFields) {
     Message tempValue;
     for (int i = left+1; i < right+1; i++){
         tempValue = log[i];
@@ -428,7 +429,7 @@ void Functions::insertionSort(int left, int right, const vector<string> &compari
         log[j+1] = tempValue;
     }
 }
-void Functions::comboSort(int left, int right, const int &threshold, vector<string> &comparisonFields) {
+void MessageLog::comboSort(int left, int right, const int &threshold, vector<string> &comparisonFields) {
     if (left < right)
     {
         if (right-left <= threshold){
@@ -444,7 +445,7 @@ void Functions::comboSort(int left, int right, const int &threshold, vector<stri
         }
     }
 }
-void Functions::merge(int left, int middle, int right, const vector<string>& comparisonFields) {
+void MessageLog::merge(int left, int middle, int right, const vector<string>& comparisonFields) {
     int i, j, k;
     int size1 = middle - left + 1;
     int size2 = right - middle;
@@ -471,10 +472,10 @@ void Functions::merge(int left, int middle, int right, const vector<string>& com
     while (j < size2)
         log[k++] = R[j++];
 }
-void Functions::countingSort() {
+void MessageLog::countingSortByTypeOfError() {
     map<string, int> count;
-    
-    for (auto i : log){
+
+    for (const auto& i : log){
         count[i.typeOfError]++;
     }
     for (auto i = ++count.begin(); i != count.end(); i++){
@@ -483,7 +484,7 @@ void Functions::countingSort() {
         i->second += previous->second;
     }
 
-    Message* tempLog = new Message [log.size()];
+    auto* tempLog = new Message [log.size()];
 
     for (int i = log.size()-1; i >= 0; i--){
         int newIndex = count[log[i].typeOfError];
@@ -496,8 +497,33 @@ void Functions::countingSort() {
 
     delete [] tempLog;
 }
+void MessageLog::radixSortByPriority() {
+    for (int i = 1; i <= 100; i *= 10)
+        countingSortForRadixSort(i);
+}
+void MessageLog::countingSortForRadixSort(int exp) {
+    int count[10] = {0};
+    Message* tempLog = new Message [log.size()];
+
+    for (auto i : log)
+        count[(i.priority/exp)%10]++;
+
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i-1];
+
+    for (int i = log.size()-1; i >= 0; i--){
+        int newIndex = count[(log[i].priority/exp)%10];
+        tempLog[newIndex - 1] = log[i];
+        count[(log[i].priority/exp)%10]--;
+    }
+
+    for (int i = 0; i < log.size(); i++)
+        log[i] = tempLog[i];
+
+    delete [] tempLog;
+}
 //Вспомогательные
-int Functions::countWords(string s) {
+int MessageLog::countWords(string s) {
     if (s.size() == 0)
         return 0;
     int count = 0;
@@ -511,7 +537,9 @@ int Functions::countWords(string s) {
 
     return count;
 }
-void Functions::generateMessages(int n) {
+void MessageLog::generateMessages(int n) {
+    srand(time(nullptr));
+
     for (int i = 0; i < n; i++){
         Message mess;
 
@@ -559,51 +587,27 @@ void Functions::generateMessages(int n) {
     }
     saveToFile();
 }
-bool Functions::subString(string main, string substring){
+bool MessageLog::subString(string main, string substring){
     for (int i = 0; i < substring.size(); i++)
         if (main[i] != substring[i])
             return false;
     return true;
 }
-void Functions::clearFiles() {
+void MessageLog::clearFiles() {
     ofstream fileTxt("data.txt", ios::out);
     fileTxt.close();
     ofstream fileBin("binary.txt", ios::out);
     fileBin.close();
-    for (auto & i : log){
-        i.savedInFiles = false;
-        Message::count = max(Message::count, i.id);
-    }
+    if (log.size() == 0)
+        Message::count = 0;
+    else
+        for (auto & i : log){
+            i.savedInFiles = false;
+            Message::count = max(Message::count, i.id);
+        }
 }
-benchData Functions::forBenchmark(int N) {
-    Message::count = 0;
-
-    double timeGeneratingAndSavingStart = clock();
-    generateMessages(N);
-    double timeGeneratingAndSavingEnd = clock();
-    double timeGeneratingAndSaving = (timeGeneratingAndSavingEnd - timeGeneratingAndSavingStart) / CLOCKS_PER_SEC;
-
-    double timeReadingMessStart = clock();
-    readingFromTxt();
-    double timeReadingMessEnd = clock();
-    double timeReading = (timeReadingMessEnd - timeReadingMessStart) / CLOCKS_PER_SEC;
-    cout << "log " << log.size() << endl;
-    double timeSearchingMessStart = clock();
-    benchSearchingWithSubstr("abcd");
-    double timeSearchingMessEnd = clock();
-    double timeSearching = (timeSearchingMessEnd- timeSearchingMessStart) / CLOCKS_PER_SEC;
-
-    benchData data{};
-    data.timeGeneratingAndSaving = timeGeneratingAndSaving;
-    data.timeReading = timeReading;
-    data.timeSearching = timeSearching;
-    fstream file("data.txt");
-    double size = 0;
-    file.seekg (0, std::ios::end);
-    size = file.tellg();
-    file.close();
-    data.memoryOfData = size/1024/1024;
-
-    return data;
-
+void MessageLog::copyTo(MessageLog buffer) {
+    buffer.log.clear();
+    for (auto i : log)
+        buffer.log.push_back(i);
 }

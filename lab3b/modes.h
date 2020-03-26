@@ -14,4 +14,8 @@ void interactive();
 void demonstration();
 
 void benchmark();
+
+double timeComboSort(MessageLog workingLog, vector<string> comparisonFields);
+double timeCountingSort(MessageLog workingLog);
+double timeRadixSort(MessageLog workingLog);
 #endif //LAB3B_MODES_H

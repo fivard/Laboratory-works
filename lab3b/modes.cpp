@@ -6,7 +6,7 @@
 #include "functions.h"
 
 void interactive(){
-    Functions functions;
+    MessageLog functions;
     functions.defineId();
     functions.log.clear();
 
@@ -35,6 +35,8 @@ void interactive(){
              << "14 - delete a message\n"
              << "15 - update a message\n"
              << "16 - sort vector by some fields\n"
+             << "17 - sort vector by typeOfError (counting Sort)\n"
+             << "18 - sort vector by priority (radix Sort)\n"
              << "100 - exit\n";
         short action;
         cin >> action;
@@ -88,10 +90,10 @@ void interactive(){
                 functions.coutFromVector();
                 break;
             case 6:
-                Functions::coutFromTxt();
+                MessageLog::coutFromTxt();
                 break;
             case 7:
-                Functions::coutFromBin();
+                MessageLog::coutFromBin();
                 break;
             case 8:
                 cout << "Enter count of messages\n";
@@ -110,7 +112,7 @@ void interactive(){
                 FullTime timeAfter;
                 cin >> timeAfter.year >> timeAfter.month >> timeAfter.day
                     >> timeAfter.hour >> timeAfter.minutes >> timeAfter.sec;
-                Functions::searchingBetweenTime(timeBefore, timeAfter);
+                MessageLog::searchingBetweenTime(timeBefore, timeAfter);
                 break;
             case 10:
                 cout << "Choose a type of message\n"
@@ -119,12 +121,12 @@ void interactive(){
                 cout << "Choose a loading of message\n";
                 double neededLoading;
                 cin >> neededLoading;
-                Functions::searchingTypeAndLoading(neededType, neededLoading);
+                MessageLog::searchingTypeAndLoading(neededType, neededLoading);
                 break;
             case 11:
                 cout << "Enter substring which is start of the message\n";
                 cin >> subStr;
-                Functions::searchingSubString(subStr);
+                MessageLog::searchingSubString(subStr);
                 break;
             case 12:
                 functions.clearFiles();
@@ -153,9 +155,15 @@ void interactive(){
             case 16:
                 comparisonFields = functions.setComparisonFields();
                 functions.comboSort(0, functions.log.size()-1, 50, comparisonFields);
+                cout << "Sorted\n";
                 break;
             case 17:
-                functions.countingSort();
+                functions.countingSortByTypeOfError();
+                cout << "Sorted\n";
+                break;
+            case 18:
+                functions.radixSortByPriority();
+                cout << "Sorted\n";
                 break;
             case 100:
                 flag = false;
@@ -166,81 +174,94 @@ void interactive(){
 };
 
 void demonstration(){
-    Functions func;
+    MessageLog func;
     func.clearFiles();
-    Functions::defineId();
+    MessageLog::defineId();
+    int size = 30;
 
-    cout << "DEMONSTRATION MODE HAS BEEN STARTED\n";
-    cout << "Let's create new message\n";
-    func.createNewElemAndAddToVector("We have created new mess");
-    cout << "Let's see what we have done\n\n";
+    cout << "Generate " << size << " random mess\n";
+    func.generateMessages(size);
     func.coutFromVector();
-    cout << "\nOkay, save to txt and bin files\n\n";
-    func.saveToFile();
-    cout << "Now, we have in txt:\n\n";
-    Functions::coutFromTxt();
-    cout << "\n...and in bin:\n\n";
-    Functions::coutFromBin();
-    cout << "\nIts too long, let's generate 10 messages quickly and add them to files\n";
-    func.generateMessages(10);
-    cout << "Now, we have in txt:\n\n";
-    Functions::coutFromTxt();
-    cout << "Let's delete a message. For example, 5th\n";
-    func.deleteOneMessage(5);
-    cout << "Now, we have in txt:\n\n";
-    Functions::coutFromTxt();
-    cout << "\nLet's update a message. For example, 7th and enter new message 'Smells like teen spirits'\n\n";
-    func.updateOneMessage(7, "Smells like teen spirits");
-    cout << "Now, we have in txt:\n\n";
-    Functions::coutFromTxt();
-    cout << "Last part of demo: searching\n";
-    cout << "\n1) searchingSubString(Smells)\n\n";
-    Functions::searchingSubString("Smells");
-    cout << "\n2) searchingTypeAndLoading(warning, 0.1);\n\n";
-    Functions::searchingTypeAndLoading("warning", 0.1);
-    FullTime timeBefore, timeAfter;
-    timeBefore.year = func.log[0].timeCreated.year;
-    timeBefore.month = func.log[0].timeCreated.month;
-    timeBefore.day = func.log[0].timeCreated.day;
-    timeBefore.hour = func.log[0].timeCreated.hour;
-    timeBefore.minutes = func.log[0].timeCreated.minutes;
-    timeBefore.sec = max(func.log[0].timeCreated.sec-5,0);
-    timeAfter.year = func.log[0].timeCreated.year;
-    timeAfter.month = func.log[0].timeCreated.month;
-    timeAfter.day = func.log[0].timeCreated.day;
-    timeAfter.hour = func.log[0].timeCreated.hour;
-    timeAfter.minutes = func.log[0].timeCreated.minutes;
-    timeAfter.sec = min(func.log[0].timeCreated.sec+5,59);
-    cout << "\n3) searchingBetweenTime(" << timeBefore.year << "." << timeBefore.month << "." << timeBefore.day << " "
-         << timeBefore.hour << ":" << timeBefore.minutes << ":" << timeBefore.sec << ", ";
-    cout << timeAfter.year << "." << timeAfter.month << "." << timeAfter.day << " "
-         << timeAfter.hour << ":" << timeAfter.minutes << ":" << timeAfter.sec << ")\n\n";
-    Functions::searchingBetweenTime(timeBefore, timeAfter);
+
+    string firstField = "priority";
+    string secondField = "loading";
+    vector<string> comparisonFields;
+    comparisonFields.push_back(firstField);
+    comparisonFields.push_back(secondField);
+    cout << "\nSort by " << firstField << " and " << secondField << " with comboSort\n";
+    func.comboSort(0, size-1, 5, comparisonFields);
+    func.coutFromVector();
+
+    cout << "\nSort by typeOfError with countingSort\n";
+    func.countingSortByTypeOfError();
+    func.coutFromVector();
+
+    cout << "\nSort by priority with radixSort\n";
+    func.radixSortByPriority();
+    func.coutFromVector();
 
     cout << "\nTHE END OF DEMO MOD\n";
 }
 
 void benchmark(){
-    bool flag = true;
-    Functions func;
-    int countMessages = 10;
-    double allTime = 0;
+    MessageLog workingLog, buffer;
+    int size = 10000;
+    workingLog.generateMessages(size);
+    workingLog.copyTo(buffer);
+    cout << "Generate log with " << size << " elements\n";
 
-    benchData data{0,0,0,0} ;
-    while(allTime < 10) {
-        func.clearFiles();
-        Message::count = 0;
-        cout << endl << "Count of messages " << countMessages << endl;
-        data = func.forBenchmark(countMessages);
-        allTime = data.timeGeneratingAndSaving + data.timeReading + data.timeSearching;
-        cout << "timeGeneratingAndSaving = " << data.timeGeneratingAndSaving << endl;
-        cout << "timeReading = " << data.timeReading << endl;
-        cout << "timeSearching = " << data.timeSearching << endl;
-        cout << "All time = " << allTime << endl;
-        cout << "Memory = " << data.memoryOfData << "MB " << endl << endl;
-        if (allTime > 1)
-            countMessages += countMessages;
-        else
-            countMessages *= 10;
-    }
+    cout << "Sort by typeOfError. ComboSort and CountingSort\n";
+    vector<string> comparisonFields = {"typeOfError"};
+    cout << "ComboSort's time = " << timeComboSort(workingLog, comparisonFields) << endl;
+    buffer.copyTo(workingLog);
+    cout << "CountingSort's time = " << timeCountingSort(workingLog) << endl;
+    buffer.copyTo(workingLog);
+
+    cout << "\nSort by priority. ComboSort and RadixSort\n";
+    comparisonFields = {"priority"};
+    cout << "ComboSort's time = " << timeComboSort(workingLog, comparisonFields) << endl;
+    buffer.copyTo(workingLog);
+    cout << "RadixSort's time = " << timeRadixSort(workingLog) << endl;
+    buffer.copyTo(workingLog);
+
+    cout << "\nSort by typeOfError and loading. ComboSort and CountingSort. CountingSort is sorting only by typeOfError\n";
+    comparisonFields = {"typeOfError", "loading"};
+    cout << "ComboSort's time = " << timeComboSort(workingLog, comparisonFields) << endl;
+    buffer.copyTo(workingLog);
+    cout << "CountingSort's time = " << timeCountingSort(workingLog) << endl;
+    buffer.copyTo(workingLog);
+
+    cout << "\nSort by priority and id. ComboSort and RadixSort. RadixSort is sorting only by priority\n";
+    comparisonFields = {"priority", "id"};
+    cout << "ComboSort's time = " << timeComboSort(workingLog, comparisonFields) << endl;
+    buffer.copyTo(workingLog);
+    cout << "RadixSort's time = " << timeRadixSort(workingLog) << endl;
+    buffer.copyTo(workingLog);
+
+    cout << "\nTHE END OF BENCHMARK MOD\n";
 }
+
+double timeComboSort(MessageLog workingLog, vector<string> comparisonFields){
+    double startComboSort = clock();
+    workingLog.comboSort(0, workingLog.log.size()-1, 50, comparisonFields);
+    double endComboSort = clock();
+    double timeComboSort = (endComboSort - startComboSort) / CLOCKS_PER_SEC;
+    return timeComboSort;
+}
+
+double timeCountingSort(MessageLog workingLog){
+    double startCountingSort = clock();
+    workingLog.countingSortByTypeOfError();
+    double endCountingSort = clock();
+    double timeCountingSort = (endCountingSort - startCountingSort) / CLOCKS_PER_SEC;
+    return timeCountingSort;
+}
+
+double timeRadixSort(MessageLog workingLog){
+    double startRadixSort = clock();
+    workingLog.radixSortByPriority();
+    double endRadixSort= clock();
+    double timeRadixSort = (endRadixSort - startRadixSort) / CLOCKS_PER_SEC;
+    return timeRadixSort;
+}
+
