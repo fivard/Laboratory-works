@@ -606,7 +606,7 @@ void MessageLog::clearFiles() {
             Message::count = max(Message::count, i.id);
         }
 }
-void MessageLog::copyTo(MessageLog buffer) {
+void MessageLog::copyTo(MessageLog& buffer) {
     buffer.log.clear();
     for (auto i : log)
         buffer.log.push_back(i);
