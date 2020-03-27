@@ -59,7 +59,7 @@ void ArrayOfPoints::generateArray() {
         arr[i] =tempPoint;
     }
 }
-void ArrayOfPoints::copyTo(ArrayOfPoints newArray) {
+void ArrayOfPoints::copyTo(ArrayOfPoints& newArray) {
     for (int i = 0; i < size; i++)
         newArray.arr[i] = this->arr[i];
 }
