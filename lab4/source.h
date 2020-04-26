@@ -27,7 +27,9 @@ private:
 
 public:
     Tree(int newValue);
-    void output();
+    Node* getRoot();
+    void outputWithPath();
+    void outputWithIndent(Node* currentNode, int countOfIndents = 0);
     void push_to(int newValue);
 };
 

@@ -12,10 +12,15 @@ Tree::Tree(int newValue){
     root = new Node(newValue);
 }
 
+Tree::Node* Tree::getRoot() {
+    return root;
+}
+
 void Tree::outputPath(vector<int> pathToCurrentNode, Node* currentNode) {
+    cout << "path = ";
     for (int i = 0; i < pathToCurrentNode.size(); i++)
         cout << pathToCurrentNode[i] << '\t';
-    cout << ": " << currentNode->value << '\n';
+    cout << ": value = " << currentNode->value << '\n';
 
     for (int i = 0; i < currentNode->leaps.size(); i++){
         pathToCurrentNode.push_back(i+1);
@@ -23,10 +28,9 @@ void Tree::outputPath(vector<int> pathToCurrentNode, Node* currentNode) {
         pathToCurrentNode.pop_back();
     }
 }
-
-void Tree::output() {
-    string currentPath;
-    cout << "root: " << root->value << '\n';
+void Tree::outputWithPath() {
+    cout << "TREE OUTPUT\n"
+         << "root: " << root->value << '\n';
     vector<int> path;
     for (int i = 0; i < root->leaps.size(); i++) {
         path.push_back(i+1);
@@ -34,24 +38,32 @@ void Tree::output() {
         path.pop_back();
     }
 }
+void Tree::outputWithIndent(Node* currentNode, int countOfIndents) {
+    for (int i = 0; i < countOfIndents; i++)
+        cout << "\t";
+    cout << ": " << currentNode->value << '\n';
+    countOfIndents++;
+    for (int i = 0; i < currentNode->leaps.size(); i++)
+        outputWithIndent(currentNode->leaps[i], countOfIndents);
+}
 
 void Tree::push_to(int newValue) {
     Node* currentNode = root;
     bool inputEnd = true;
     int nodeInPath;
 
-    if (root->leaps.size() == 0){
+    if (root->leaps.empty()){
         Node* newNode = new Node(newValue);
         root->leaps.push_back(newNode);
-        cout << "Tree is empty. Added to root\n";
+        cout << "Tree is empty. Node is added to root\n";
         return;
     }
 
     while (inputEnd){
-        if (currentNode->leaps.size() == 0){
+        if (currentNode->leaps.empty()){
             Node* newNode = new Node(newValue);
             currentNode->leaps.push_back(newNode);
-            cout << "Node is empty. Added here\n";
+            cout << "Current node hasn't leaps. Added here\n";
             return;
         }
         cout << "Available leaps: ";
