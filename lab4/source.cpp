@@ -7,50 +7,48 @@
 Tree::Node::Node(int newValue) {
     value = newValue;
 }
-
 Tree::Tree(int newValue){
     root = new Node(newValue);
+}
+Tree::~Tree(){
+    cout << "Destructor: \n";
+    destroyNode(root);
 }
 
 Tree::Node* Tree::getRoot() {
     return root;
 }
 
-void Tree::outputPath(vector<int> pathToCurrentNode, Node* currentNode) {
+
+void Tree::outputWithPath(vector<int> pathToCurrentNode, Node* currentNode) {
     cout << "path = ";
-    for (int i = 0; i < pathToCurrentNode.size(); i++)
-        cout << pathToCurrentNode[i] << '\t';
+    for (int i : pathToCurrentNode)
+        cout << i << '\t';
     cout << ": value = " << currentNode->value << '\n';
 
-    for (int i = 0; i < currentNode->leaps.size(); i++){
-        pathToCurrentNode.push_back(i+1);
-        outputPath(pathToCurrentNode, currentNode->leaps[i]);
+    for (int i = 0; i < currentNode->leaps.size(); i++) {
+        pathToCurrentNode.push_back(i);
+        outputWithPath(pathToCurrentNode, currentNode->leaps[i]);
         pathToCurrentNode.pop_back();
     }
 }
-void Tree::outputWithPath() {
-    cout << "TREE OUTPUT\n"
-         << "root: " << root->value << '\n';
-    vector<int> path;
-    for (int i = 0; i < root->leaps.size(); i++) {
-        path.push_back(i+1);
-        outputPath(path, root->leaps[i]);
-        path.pop_back();
-    }
-}
+
 void Tree::outputWithIndent(Node* currentNode, int countOfIndents) {
-    for (int i = 0; i < countOfIndents; i++)
-        cout << "\t";
-    cout << ": " << currentNode->value << '\n';
+
+    cout << currentNode << " : val = " << currentNode->value << '\n';
     countOfIndents++;
-    for (int i = 0; i < currentNode->leaps.size(); i++)
+
+    for (int i = 0; i < currentNode->leaps.size(); i++) {
+        for (int j = 0; j < countOfIndents; j++)
+            cout << '\t';
+        cout << i << ". ";
         outputWithIndent(currentNode->leaps[i], countOfIndents);
+    }
 }
 
 void Tree::push_to(int newValue) {
     Node* currentNode = root;
-    bool inputEnd = true;
-    int nodeInPath;
+    int indexOfNode;
 
     if (root->leaps.empty()){
         Node* newNode = new Node(newValue);
@@ -59,29 +57,82 @@ void Tree::push_to(int newValue) {
         return;
     }
 
-    while (inputEnd){
+    while (true){
+        outputWithIndent(currentNode);
+
         if (currentNode->leaps.empty()){
             Node* newNode = new Node(newValue);
             currentNode->leaps.push_back(newNode);
-            cout << "Current node hasn't leaps. Added here\n";
             return;
         }
+
         cout << "Available leaps: ";
         for (int i = 0; i < currentNode->leaps.size(); i++)
-            cout << i+1 << ' ';
-        cout << "\nChoose the leap\n"
-            << "0 - exit and add to the end of the current node\n";
+            cout << i << ' ';
+        cout << "\nChoose the leap or enter \"-1\" and new node will be added here\n";
 
-        cin >> nodeInPath;
-        if (nodeInPath > currentNode->leaps.size() || nodeInPath < 0)
-            cout << "Wrong node\n";
-        else if (nodeInPath == 0) {
-            inputEnd = false;
+        cin >> indexOfNode;
+
+        if (indexOfNode >= int(currentNode->leaps.size()) || indexOfNode < -1)
+            cout << "Wrong case\n";
+        else if (indexOfNode == -1) {
             Node* newNode = new Node(newValue);
             currentNode->leaps.push_back(newNode);
-        }
-        else
-            currentNode = currentNode->leaps[nodeInPath-1];
+            return;
+        } else
+            currentNode = currentNode->leaps[indexOfNode];
 
     }
+}
+
+void Tree::deleteSubTree() {
+    Node* currentNode = root;
+    Node* previousNode = root;
+    int indexOfNode = -1, action;
+
+    if (root->leaps.empty()) {
+        cout << "Root hasn't got leaps.\n";
+        return;
+    }
+
+    while(true){
+        outputWithIndent(currentNode);
+
+        if (currentNode->leaps.empty()){
+            cout << "This node hasn't got a leap\n";
+            previousNode->leaps.erase(previousNode->leaps.begin()+indexOfNode);
+            destroyNode(currentNode);
+            return;
+        }
+
+        cout << "Available leaps: ";
+        for (int i = 0; i < currentNode->leaps.size(); i++)
+            cout << i << ' ';
+        cout << "\nChoose the leap or press \"-1\" and current node will be deleted\n";
+
+        cin >> action;
+
+        if (action < -1 || action >= int(currentNode->leaps.size()))
+            cout << "Wrong case\n";
+        else if (action == -1){
+            if (indexOfNode == -1) {
+                cout << "You cant delete root\n";
+                continue;
+            }
+            previousNode->leaps.erase(previousNode->leaps.begin()+indexOfNode);
+            destroyNode(currentNode);
+            return;
+        } else {
+            indexOfNode = action;
+            previousNode = currentNode;
+            currentNode = currentNode->leaps[indexOfNode];
+        }
+    }
+}
+
+void Tree::destroyNode(Tree::Node* currentNode) {
+    for (auto & leap : currentNode->leaps)
+        destroyNode(leap);
+    cout << "Delete node " << currentNode << "\n" ;
+    delete currentNode;
 }

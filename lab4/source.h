@@ -20,17 +20,19 @@ private:
     public:
         int value;
         vector<Node*> leaps;
-        Node(int newValue);
+        explicit Node(int newValue);
     };
     Node* root;
-    void outputPath(vector<int> pathToCurrentNode, Node* currentNode);
 
 public:
-    Tree(int newValue);
+    explicit Tree(int newValue);
+    ~Tree();
     Node* getRoot();
-    void outputWithPath();
-    void outputWithIndent(Node* currentNode, int countOfIndents = 0);
+    static void outputWithPath(vector<int> pathToCurrentNode, Node* currentNode);
+    static void outputWithIndent(Node* currentNode, int countOfIndents = 0);
     void push_to(int newValue);
+    void deleteSubTree();
+    static void destroyNode(Node* currentNode);
 };
 
 #endif //LAB4_SOURCE_H
