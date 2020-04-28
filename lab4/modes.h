@@ -11,4 +11,7 @@ void interactive();
 
 void demonstration();
 
+void casualTreeMode();
+void binaryTreeMode();
+
 #endif //LAB4_MODES_H

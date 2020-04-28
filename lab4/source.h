@@ -30,9 +30,29 @@ public:
     Node* getRoot();
     static void outputWithPath(vector<int> pathToCurrentNode, Node* currentNode);
     static void outputWithIndent(Node* currentNode, int countOfIndents = 0);
-    void push_to(int newValue);
-    void deleteSubTree();
+    void push(int newValue);
+    Node* deleteSubTree();
     static void destroyNode(Node* currentNode);
+};
+
+class BinaryTree{
+private:
+    class Node{
+    public:
+        int value;
+        Node* left;
+        Node* right;
+        explicit Node(int newValue);
+    };
+    Node* root;
+
+public:
+    Node* getRoot();
+    ~BinaryTree();
+    explicit BinaryTree(int newValue);
+    static void outputBinaryTree(Node* currentNode, int countOfIndents = 0);
+    void push(int newValue);
+    void destroyNode(Node* currentNode);
 };
 
 #endif //LAB4_SOURCE_H

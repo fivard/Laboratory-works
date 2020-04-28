@@ -3,10 +3,14 @@
 //
 
 #include "source.h"
+//----------------------------NodeForTree-------------------------//
 
 Tree::Node::Node(int newValue) {
     value = newValue;
 }
+
+//----------------------------Tree-------------------------//
+
 Tree::Tree(int newValue){
     root = new Node(newValue);
 }
@@ -14,12 +18,9 @@ Tree::~Tree(){
     cout << "Destructor: \n";
     destroyNode(root);
 }
-
 Tree::Node* Tree::getRoot() {
     return root;
 }
-
-
 void Tree::outputWithPath(vector<int> pathToCurrentNode, Node* currentNode) {
     cout << "path = ";
     for (int i : pathToCurrentNode)
@@ -32,7 +33,6 @@ void Tree::outputWithPath(vector<int> pathToCurrentNode, Node* currentNode) {
         pathToCurrentNode.pop_back();
     }
 }
-
 void Tree::outputWithIndent(Node* currentNode, int countOfIndents) {
 
     cout << currentNode << " : val = " << currentNode->value << '\n';
@@ -45,8 +45,7 @@ void Tree::outputWithIndent(Node* currentNode, int countOfIndents) {
         outputWithIndent(currentNode->leaps[i], countOfIndents);
     }
 }
-
-void Tree::push_to(int newValue) {
+void Tree::push(int newValue) {
     Node* currentNode = root;
     int indexOfNode;
 
@@ -84,15 +83,14 @@ void Tree::push_to(int newValue) {
 
     }
 }
-
-void Tree::deleteSubTree() {
+Tree::Node* Tree::deleteSubTree() {
     Node* currentNode = root;
     Node* previousNode = root;
     int indexOfNode = -1, action;
 
     if (root->leaps.empty()) {
         cout << "Root hasn't got leaps.\n";
-        return;
+        return nullptr;
     }
 
     while(true){
@@ -101,8 +99,8 @@ void Tree::deleteSubTree() {
         if (currentNode->leaps.empty()){
             cout << "This node hasn't got a leap\n";
             previousNode->leaps.erase(previousNode->leaps.begin()+indexOfNode);
-            destroyNode(currentNode);
-            return;
+            cout << "Node " << currentNode << " is deleted\n";
+            return currentNode;
         }
 
         cout << "Available leaps: ";
@@ -120,8 +118,8 @@ void Tree::deleteSubTree() {
                 continue;
             }
             previousNode->leaps.erase(previousNode->leaps.begin()+indexOfNode);
-            destroyNode(currentNode);
-            return;
+            cout << "Node " << currentNode << " is deleted\n";
+            return currentNode;
         } else {
             indexOfNode = action;
             previousNode = currentNode;
@@ -129,10 +127,76 @@ void Tree::deleteSubTree() {
         }
     }
 }
-
 void Tree::destroyNode(Tree::Node* currentNode) {
     for (auto & leap : currentNode->leaps)
         destroyNode(leap);
     cout << "Delete node " << currentNode << "\n" ;
+    delete currentNode;
+}
+
+//----------------------------NodeForBinaryTree-------------------------//
+
+BinaryTree::Node::Node(int newValue) {
+    value = newValue;
+    left = right = nullptr;
+}
+
+//----------------------------BinaryTree-------------------------//
+BinaryTree::Node* BinaryTree::getRoot() {
+    return root;
+}
+BinaryTree::~BinaryTree() {
+    cout << "Destructor:\n";
+    destroyNode(root);
+}
+BinaryTree::BinaryTree(int newValue) {
+    root = new Node(newValue);
+}
+void BinaryTree::outputBinaryTree(BinaryTree::Node *currentNode, int countOfIndents) {
+    cout << currentNode << " : val = " << currentNode->value << '\n';
+    countOfIndents++;
+    if (currentNode->left != nullptr) {
+        for (int j = 0; j < countOfIndents; j++)
+            cout << '\t';
+        cout << "left son: ";
+        outputBinaryTree(currentNode->left, countOfIndents);
+    }
+    if (currentNode->right != nullptr) {
+        for (int j = 0; j < countOfIndents; j++)
+            cout << '\t';
+        cout << "right son: ";
+        outputBinaryTree(currentNode->right, countOfIndents);
+    }
+}
+void BinaryTree::push(int newValue) {
+    Node* currentNode = root;
+
+    while (true){
+        if (newValue < currentNode->value)
+            if (currentNode->left != nullptr) {
+                currentNode = currentNode->left;
+                continue;
+            } else {
+                Node* newNode = new Node(newValue);
+                currentNode->left = newNode;
+                return;
+            }
+        else
+            if (currentNode->right != nullptr){
+                currentNode = currentNode->right;
+                continue;
+            } else {
+                Node* newNode = new Node(newValue);
+                currentNode->right = newNode;
+                return;
+            }
+    }
+}
+void BinaryTree::destroyNode(Node *currentNode) {
+    if (currentNode->left != nullptr)
+        destroyNode(currentNode->left);
+    if (currentNode->right != nullptr)
+        destroyNode(currentNode->right);
+    cout << "Destroy " << currentNode << '\n';
     delete currentNode;
 }
