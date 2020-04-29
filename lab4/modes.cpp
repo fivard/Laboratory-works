@@ -49,7 +49,8 @@ void binaryTreeMode(){
         cout << "\nChoose your action\n"
              << "1 - push new element\n"
              << "2 - output tree\n"
-             << "3 - exit\n";
+             << "3 - build consistent storage and output\n"
+             << "4 - exit\n";
 
         int action;
         cin >> action;
@@ -65,6 +66,10 @@ void binaryTreeMode(){
                 BinaryTree::outputBinaryTree(tree.getRoot());
                 break;
             case 3:
+                tree.buildConsistentStorage();
+                tree.outputConsistentStorage();
+                break;
+            case 4:
                 continued = false;
                 break;
             default:

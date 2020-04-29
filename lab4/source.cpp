@@ -3,13 +3,13 @@
 //
 
 #include "source.h"
-//----------------------------NodeForTree-------------------------//
+///----------------------------NodeForTree-------------------------//
 
 Tree::Node::Node(int newValue) {
     value = newValue;
 }
 
-//----------------------------Tree-------------------------//
+///----------------------------Tree-------------------------///
 
 Tree::Tree(int newValue){
     root = new Node(newValue);
@@ -134,23 +134,46 @@ void Tree::destroyNode(Tree::Node* currentNode) {
     delete currentNode;
 }
 
-//----------------------------NodeForBinaryTree-------------------------//
+///----------------------------NodeForBinaryTree-------------------------///
 
 BinaryTree::Node::Node(int newValue) {
     value = newValue;
     left = right = nullptr;
 }
 
-//----------------------------BinaryTree-------------------------//
+///----------------------------BinaryTree-------------------------///
+size_t BinaryTree::DFSBuildConsistentStorage(BinaryTree::Node *currentNode, size_t currentNumber) {
+    storage[currentNumber].value = currentNode->value;
+    size_t numberOfThisNode = currentNumber;
+
+
+    if (currentNode->left != nullptr) {
+        storage[numberOfThisNode].isLeft = true;
+        currentNumber = DFSBuildConsistentStorage(currentNode->left, currentNumber+1);
+    } else
+        storage[numberOfThisNode].isLeft = false;
+
+    cout << "right is " << currentNode->right << '\n';
+    if (currentNode->right != nullptr){
+        storage[numberOfThisNode].right = currentNumber+1;
+        currentNumber = DFSBuildConsistentStorage(currentNode->right, currentNumber+1);
+    } else
+        storage[numberOfThisNode].right = 0;
+
+    return currentNumber;
+}
 BinaryTree::Node* BinaryTree::getRoot() {
     return root;
 }
 BinaryTree::~BinaryTree() {
     cout << "Destructor:\n";
     destroyNode(root);
+    delete storage;
 }
 BinaryTree::BinaryTree(int newValue) {
     root = new Node(newValue);
+    countOfNods = 1;
+    storage = nullptr;
 }
 void BinaryTree::outputBinaryTree(BinaryTree::Node *currentNode, int countOfIndents) {
     cout << currentNode << " : val = " << currentNode->value << '\n';
@@ -170,6 +193,7 @@ void BinaryTree::outputBinaryTree(BinaryTree::Node *currentNode, int countOfInde
 }
 void BinaryTree::push(int newValue) {
     Node* currentNode = root;
+    countOfNods++;
 
     while (true){
         if (newValue < currentNode->value)
@@ -199,4 +223,28 @@ void BinaryTree::destroyNode(Node *currentNode) {
         destroyNode(currentNode->right);
     cout << "Destroy " << currentNode << '\n';
     delete currentNode;
+}
+void BinaryTree::buildConsistentStorage() {
+    delete storage;
+    storage = new NodeOfConsistentStorage[countOfNods];
+    DFSBuildConsistentStorage(root, 0);
+}
+void BinaryTree::outputConsistentStorage() {
+    cout << "arrayIndex:\t";
+    for (int i = 0; i < countOfNods; i++)
+        cout << i << '\t';
+    cout << '\n';
+
+    cout << "value:\t\t";
+    for (int i = 0; i < countOfNods; i++)
+        cout << storage[i].value << '\t';
+
+    cout << "\nrightIndex:\t";
+    for (int i = 0; i < countOfNods; i++)
+        cout << storage[i].right << '\t';
+
+    cout << "\nexistLeft:\t";
+    for (int i = 0; i < countOfNods; i++)
+        cout << storage[i].isLeft << '\t';
+    cout << '\n';
 }

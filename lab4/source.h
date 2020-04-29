@@ -12,7 +12,7 @@
 
 using namespace std;
 
-
+///----------------------------Tree-------------------------///
 
 class Tree{
 private:
@@ -35,6 +35,8 @@ public:
     static void destroyNode(Node* currentNode);
 };
 
+///----------------------------BinaryTree-------------------------///
+
 class BinaryTree{
 private:
     class Node{
@@ -44,7 +46,18 @@ private:
         Node* right;
         explicit Node(int newValue);
     };
+
+    struct NodeOfConsistentStorage{
+        int value;
+        size_t right;
+        bool isLeft;
+    } ;
+
+    size_t DFSBuildConsistentStorage(Node* currentNode, size_t currentNumber);
+
+    size_t countOfNods;
     Node* root;
+    NodeOfConsistentStorage* storage;
 
 public:
     Node* getRoot();
@@ -52,7 +65,9 @@ public:
     explicit BinaryTree(int newValue);
     static void outputBinaryTree(Node* currentNode, int countOfIndents = 0);
     void push(int newValue);
-    void destroyNode(Node* currentNode);
+    static void destroyNode(Node* currentNode);
+    void buildConsistentStorage();
+    void outputConsistentStorage();
 };
 
 #endif //LAB4_SOURCE_H
